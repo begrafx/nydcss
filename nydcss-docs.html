@@ -1,0 +1,2644 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NydCSS — Documentation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ── DOCS DESIGN TOKENS ────────────────────────────────────────────── */
+:root {
+  --doc-font-display: 'Syne', system-ui, sans-serif;
+  --doc-font-mono: 'Fira Code', 'Cascadia Code', monospace;
+  --doc-sidebar-w: 268px;
+  --doc-nav-h: 56px;
+  --doc-content-max: 780px;
+
+  --doc-sidebar-bg: #0d1117;
+  --doc-sidebar-text: #8b949e;
+  --doc-sidebar-text-active: #e6edf3;
+  --doc-sidebar-section: #484f58;
+  --doc-sidebar-accent: #58a6ff;
+  --doc-sidebar-hover-bg: rgba(255,255,255,.06);
+  --doc-sidebar-active-bg: rgba(88,166,255,.12);
+
+  --doc-bg: #ffffff;
+  --doc-text: #1c2026;
+  --doc-text-muted: #57606a;
+  --doc-border: #e8eaed;
+  --doc-surface: #f6f8fa;
+  --doc-surface-2: #eef0f3;
+
+  --doc-blue: #0969da;
+  --doc-blue-light: #ddf4ff;
+  --doc-green: #1a7f37;
+  --doc-green-light: #dafbe1;
+  --doc-orange: #bc4c00;
+  --doc-orange-light: #fff1e5;
+  --doc-red: #cf222e;
+  --doc-red-light: #ffebe9;
+  --doc-purple: #6e40c9;
+  --doc-purple-light: #fbefff;
+
+  --doc-code-bg: #f6f8fa;
+  --doc-code-border: #d1d9e0b3;
+  --doc-code-preview-bg: #fafbfc;
+
+  --doc-radius: 8px;
+  --doc-shadow-sm: 0 1px 3px rgba(31,35,40,.08);
+  --doc-shadow: 0 3px 8px rgba(31,35,40,.12);
+}
+
+[data-theme="dark"] {
+  --doc-bg: #0d1117;
+  --doc-text: #e6edf3;
+  --doc-text-muted: #8b949e;
+  --doc-border: #30363d;
+  --doc-surface: #161b22;
+  --doc-surface-2: #21262d;
+
+  --doc-blue: #58a6ff;
+  --doc-blue-light: rgba(56,139,253,.15);
+  --doc-green: #3fb950;
+  --doc-green-light: rgba(46,160,67,.15);
+  --doc-orange: #d29922;
+  --doc-orange-light: rgba(187,128,9,.15);
+  --doc-red: #f85149;
+  --doc-red-light: rgba(248,81,73,.15);
+  --doc-purple: #bc8cff;
+  --doc-purple-light: rgba(188,140,255,.15);
+
+  --doc-code-bg: #161b22;
+  --doc-code-border: #30363d;
+  --doc-code-preview-bg: #0d1117;
+  --doc-shadow-sm: 0 1px 3px rgba(0,0,0,.3);
+  --doc-shadow: 0 3px 8px rgba(0,0,0,.4);
+}
+
+/* ── RESET ─────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--doc-text);
+  background: var(--doc-bg);
+  overflow-x: hidden;
+}
+
+/* ── LAYOUT ────────────────────────────────────────────────────────── */
+.doc-layout { display: flex; min-height: 100vh; }
+
+/* ── TOP NAV ───────────────────────────────────────────────────────── */
+.doc-topnav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--doc-nav-h);
+  background: var(--doc-sidebar-bg);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 16px;
+  z-index: 200;
+}
+.doc-logo {
+  font-family: var(--doc-font-display);
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #fff;
+  text-decoration: none;
+  white-space: nowrap;
+  letter-spacing: -0.02em;
+}
+.doc-logo span { color: var(--doc-sidebar-accent); }
+.doc-logo-badge {
+  font-size: 0.65rem;
+  font-weight: 600;
+  background: rgba(88,166,255,.2);
+  color: var(--doc-sidebar-accent);
+  border: 1px solid rgba(88,166,255,.3);
+  border-radius: 4px;
+  padding: 1px 6px;
+  letter-spacing: 0.04em;
+  vertical-align: middle;
+  margin-left: 6px;
+}
+.doc-nav-spacer { flex: 1; }
+.doc-nav-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 13px;
+  color: #8b949e;
+  cursor: pointer;
+  transition: background .15s;
+  min-width: 200px;
+}
+.doc-nav-search:hover { background: rgba(255,255,255,.12); }
+.doc-nav-links { display: flex; gap: 4px; }
+.doc-nav-links a {
+  color: #8b949e;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 5px 10px;
+  border-radius: 6px;
+  transition: color .15s, background .15s;
+}
+.doc-nav-links a:hover { color: #e6edf3; background: rgba(255,255,255,.08); }
+.doc-theme-btn {
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.12);
+  color: #8b949e;
+  border-radius: 6px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background .15s;
+}
+.doc-theme-btn:hover { background: rgba(255,255,255,.15); }
+.doc-mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: #8b949e;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 4px 8px;
+}
+
+/* ── SIDEBAR ───────────────────────────────────────────────────────── */
+.doc-sidebar {
+  position: fixed;
+  top: var(--doc-nav-h);
+  left: 0;
+  width: var(--doc-sidebar-w);
+  height: calc(100vh - var(--doc-nav-h));
+  background: var(--doc-sidebar-bg);
+  border-right: 1px solid rgba(255,255,255,.06);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 16px 0 32px;
+  z-index: 100;
+  scrollbar-width: thin;
+  scrollbar-color: #30363d transparent;
+}
+.doc-sidebar::-webkit-scrollbar { width: 4px; }
+.doc-sidebar::-webkit-scrollbar-thumb { background: #30363d; border-radius: 4px; }
+
+.doc-nav-section {
+  padding: 16px 16px 4px;
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--doc-sidebar-section);
+  font-family: var(--doc-font-display);
+}
+.doc-nav-section:first-child { padding-top: 8px; }
+
+.doc-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 16px;
+  font-size: 13.5px;
+  color: var(--doc-sidebar-text);
+  text-decoration: none;
+  border-radius: 0;
+  transition: color .12s, background .12s;
+  cursor: pointer;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  line-height: 1.4;
+  position: relative;
+}
+.doc-nav-item:hover { color: var(--doc-sidebar-text-active); background: var(--doc-sidebar-hover-bg); }
+.doc-nav-item.active {
+  color: var(--doc-sidebar-accent);
+  background: var(--doc-sidebar-active-bg);
+  font-weight: 500;
+}
+.doc-nav-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0; bottom: 0;
+  width: 2px;
+  background: var(--doc-sidebar-accent);
+  border-radius: 0 2px 2px 0;
+}
+.doc-nav-badge {
+  margin-left: auto;
+  font-size: 10px;
+  background: rgba(88,166,255,.15);
+  color: var(--doc-sidebar-accent);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-weight: 600;
+}
+.doc-nav-badge-new {
+  background: rgba(63,185,80,.15);
+  color: #3fb950;
+}
+
+/* ── MAIN CONTENT ──────────────────────────────────────────────────── */
+.doc-main {
+  margin-left: var(--doc-sidebar-w);
+  margin-top: var(--doc-nav-h);
+  flex: 1;
+  min-width: 0;
+  padding: 48px 56px 80px;
+}
+.doc-content {
+  max-width: var(--doc-content-max);
+}
+
+/* ── PAGE HEADER ───────────────────────────────────────────────────── */
+.doc-page-title {
+  font-family: var(--doc-font-display);
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--doc-text);
+  line-height: 1.15;
+  margin-bottom: 10px;
+}
+.doc-page-desc {
+  font-size: 16px;
+  color: var(--doc-text-muted);
+  line-height: 1.65;
+  max-width: 58ch;
+  margin-bottom: 36px;
+}
+.doc-section-anchor {
+  display: block;
+  position: relative;
+  top: -80px;
+  visibility: hidden;
+}
+
+/* ── SECTION HEADINGS ──────────────────────────────────────────────── */
+.doc-h2 {
+  font-family: var(--doc-font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--doc-text);
+  margin: 48px 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--doc-border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.doc-h2:first-of-type { margin-top: 0; }
+.doc-h3 {
+  font-family: var(--doc-font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--doc-text);
+  margin: 28px 0 12px;
+  letter-spacing: -0.01em;
+}
+
+/* ── PROSE TEXT ────────────────────────────────────────────────────── */
+.doc-p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--doc-text-muted);
+  margin-bottom: 14px;
+}
+.doc-p:last-child { margin-bottom: 0; }
+.doc-p a {
+  color: var(--doc-blue);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.doc-p strong { color: var(--doc-text); font-weight: 600; }
+
+/* ── INLINE CODE ───────────────────────────────────────────────────── */
+.ic {
+  font-family: var(--doc-font-mono);
+  font-size: 0.82em;
+  background: var(--doc-surface);
+  border: 1px solid var(--doc-border);
+  border-radius: 4px;
+  padding: .12em .38em;
+  color: var(--doc-red);
+  white-space: nowrap;
+}
+[data-theme="dark"] .ic { color: #ff7b72; }
+
+/* ── CODE BLOCK ────────────────────────────────────────────────────── */
+.doc-code-wrap {
+  position: relative;
+  margin: 16px 0;
+  border-radius: var(--doc-radius);
+  border: 1px solid var(--doc-code-border);
+  background: var(--doc-code-bg);
+  overflow: hidden;
+}
+.doc-code-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--doc-code-border);
+  background: var(--doc-surface-2);
+}
+.doc-code-lang {
+  font-family: var(--doc-font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--doc-text-muted);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+.doc-copy-btn {
+  font-size: 11.5px;
+  font-family: inherit;
+  font-weight: 500;
+  color: var(--doc-text-muted);
+  background: var(--doc-surface);
+  border: 1px solid var(--doc-border);
+  border-radius: 5px;
+  padding: 3px 10px;
+  cursor: pointer;
+  transition: color .12s, background .12s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.doc-copy-btn:hover { color: var(--doc-text); background: var(--doc-surface-2); }
+.doc-copy-btn.copied { color: var(--doc-green); border-color: var(--doc-green); }
+pre.doc-pre {
+  margin: 0;
+  padding: 16px;
+  overflow-x: auto;
+  font-family: var(--doc-font-mono);
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--doc-text);
+  background: transparent;
+  border: none;
+  border-radius: 0;
+}
+.doc-pre .tok-comment { color: #8b949e; font-style: italic; }
+.doc-pre .tok-string  { color: #a5d6ff; }
+.doc-pre .tok-prop    { color: #79c0ff; }
+.doc-pre .tok-value   { color: #56d364; }
+.doc-pre .tok-selector { color: #7ee787; }
+.doc-pre .tok-at      { color: #ff7b72; }
+.doc-pre .tok-class   { color: #d2a8ff; }
+[data-theme="light"] .doc-pre .tok-string  { color: #0550ae; }
+[data-theme="light"] .doc-pre .tok-prop    { color: #0969da; }
+[data-theme="light"] .doc-pre .tok-value   { color: #1a7f37; }
+[data-theme="light"] .doc-pre .tok-selector { color: #6e40c9; }
+[data-theme="light"] .doc-pre .tok-at      { color: #cf222e; }
+[data-theme="light"] .doc-pre .tok-class   { color: #8250df; }
+
+/* ── PREVIEW BLOCK ─────────────────────────────────────────────────── */
+.doc-preview {
+  border: 1px solid var(--doc-border);
+  border-radius: var(--doc-radius);
+  overflow: hidden;
+  margin: 16px 0;
+}
+.doc-preview-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: var(--doc-surface-2);
+  border-bottom: 1px solid var(--doc-border);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--doc-text-muted);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+.doc-preview-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--doc-border);
+}
+.doc-preview-body {
+  padding: 28px 24px;
+  background: var(--doc-code-preview-bg);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+.doc-preview-body.col { flex-direction: column; align-items: flex-start; }
+.doc-preview-body.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.doc-preview-body.grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+.doc-preview-body.full { display: block; padding: 0; }
+
+/* ── PROPS TABLE ───────────────────────────────────────────────────── */
+.doc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+  margin: 14px 0 24px;
+  border: 1px solid var(--doc-border);
+  border-radius: var(--doc-radius);
+  overflow: hidden;
+}
+.doc-table th {
+  text-align: left;
+  padding: 9px 14px;
+  background: var(--doc-surface-2);
+  color: var(--doc-text-muted);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  border-bottom: 1px solid var(--doc-border);
+}
+.doc-table td {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--doc-border);
+  vertical-align: top;
+  line-height: 1.5;
+  color: var(--doc-text-muted);
+}
+.doc-table tr:last-child td { border-bottom: none; }
+.doc-table td:first-child { color: var(--doc-text); }
+
+/* ── CALLOUT ───────────────────────────────────────────────────────── */
+.doc-note {
+  display: flex;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: var(--doc-radius);
+  border: 1px solid;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.doc-note-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.doc-note-body { flex: 1; color: var(--doc-text-muted); }
+.doc-note-body strong { color: var(--doc-text); }
+.doc-note-info    { background: var(--doc-blue-light);   border-color: #b6d4fb; color: var(--doc-blue); }
+.doc-note-tip     { background: var(--doc-green-light);  border-color: #a4e4b1; color: var(--doc-green); }
+.doc-note-warning { background: var(--doc-orange-light); border-color: #f8c77e; color: var(--doc-orange); }
+.doc-note-danger  { background: var(--doc-red-light);    border-color: #ffb8b5; color: var(--doc-red); }
+[data-theme="dark"] .doc-note-info    { border-color: rgba(88,166,255,.3); }
+[data-theme="dark"] .doc-note-tip     { border-color: rgba(63,185,80,.3); }
+[data-theme="dark"] .doc-note-warning { border-color: rgba(210,153,34,.3); }
+[data-theme="dark"] .doc-note-danger  { border-color: rgba(248,81,73,.3); }
+
+/* ── ON-PAGE NAV (TOC) ─────────────────────────────────────────────── */
+.doc-toc {
+  position: fixed;
+  top: calc(var(--doc-nav-h) + 32px);
+  right: 28px;
+  width: 200px;
+  font-size: 12px;
+  line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.doc-toc-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--doc-text-muted);
+  margin-bottom: 8px;
+}
+.doc-toc a {
+  color: var(--doc-text-muted);
+  text-decoration: none;
+  padding: 2px 6px;
+  border-left: 2px solid var(--doc-border);
+  transition: color .12s, border-color .12s;
+  display: block;
+}
+.doc-toc a:hover { color: var(--doc-text); }
+.doc-toc a.active { color: var(--doc-blue); border-color: var(--doc-blue); }
+.doc-toc a.sub { padding-left: 14px; font-size: 11.5px; }
+
+/* ── COLOR SWATCHES ────────────────────────────────────────────────── */
+.doc-swatch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 8px;
+  margin: 12px 0;
+}
+.doc-swatch {
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--doc-border);
+  font-size: 11px;
+}
+.doc-swatch-color { height: 44px; }
+.doc-swatch-info { padding: 5px 7px; background: var(--doc-surface); line-height: 1.4; }
+.doc-swatch-name { font-weight: 600; color: var(--doc-text); display: block; }
+.doc-swatch-hex  { color: var(--doc-text-muted); font-family: var(--doc-font-mono); }
+
+/* ── TOKEN DISPLAY ─────────────────────────────────────────────────── */
+.doc-token-list { display: flex; flex-direction: column; gap: 2px; margin: 10px 0 20px; }
+.doc-token-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 7px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  align-items: center;
+  background: var(--doc-surface);
+  border: 1px solid var(--doc-border);
+}
+.doc-token-row:hover { background: var(--doc-surface-2); }
+.doc-token-name { font-family: var(--doc-font-mono); font-size: 12px; color: var(--doc-blue); }
+.doc-token-val  { font-family: var(--doc-font-mono); font-size: 12px; color: var(--doc-text-muted); text-align: right; }
+.doc-token-swatch {
+  display: inline-block;
+  width: 14px; height: 14px;
+  border-radius: 3px;
+  border: 1px solid var(--doc-border);
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
+/* ── SPACING VIZ ───────────────────────────────────────────────────── */
+.doc-space-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 12.5px;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--doc-border);
+}
+.doc-space-item:last-child { border-bottom: none; }
+.doc-space-bar {
+  height: 10px;
+  background: var(--doc-blue);
+  border-radius: 2px;
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+.doc-space-label { color: var(--doc-text-muted); min-width: 120px; font-family: var(--doc-font-mono); font-size: 12px; }
+.doc-space-val   { color: var(--doc-text-muted); font-family: var(--doc-font-mono); font-size: 12px; }
+
+/* ── COMPONENT PREVIEW IFRAME ISOLATION ────────────────────────────── */
+/* We inline the nyd- classes inline in preview sections using <style> overrides */
+
+/* ── NydCSS PREVIEW ELEMENTS ────────────────────────────────────────── */
+/* Embedded preview of nydcss components using CSS vars bridged to doc vars */
+.nyd-preview {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--doc-text);
+}
+
+/* Bridge nyd tokens to doc theme */
+.doc-preview-body {
+  --nyd-color-primary: #2563eb;
+  --nyd-color-primary-hover: #1d4ed8;
+  --nyd-color-primary-light: #eff6ff;
+  --nyd-color-primary-alpha: rgba(37,99,235,.15);
+  --nyd-color-text: var(--doc-text);
+  --nyd-color-text-muted: var(--doc-text-muted);
+  --nyd-color-bg: var(--doc-code-preview-bg);
+  --nyd-color-surface: var(--doc-bg);
+  --nyd-color-surface-2: var(--doc-surface);
+  --nyd-color-surface-3: var(--doc-surface-2);
+  --nyd-color-border: var(--doc-border);
+  --nyd-color-border-strong: color-mix(in srgb, var(--doc-border) 70%, var(--doc-text));
+  --nyd-color-success: #16a34a;
+  --nyd-color-success-light: #f0fdf4;
+  --nyd-color-warning: #d97706;
+  --nyd-color-warning-light: #fffbeb;
+  --nyd-color-danger: #dc2626;
+  --nyd-color-danger-light: #fef2f2;
+  --nyd-color-link: #2563eb;
+  --nyd-space-1: 4px; --nyd-space-2: 8px; --nyd-space-3: 12px;
+  --nyd-space-4: 16px; --nyd-space-5: 20px; --nyd-space-6: 24px;
+  --nyd-text-xs: 12px; --nyd-text-sm: 14px; --nyd-text-base: 16px;
+  --nyd-text-md: 18px; --nyd-text-lg: 20px; --nyd-text-xl: 24px;
+  --nyd-font-medium: 500; --nyd-font-semibold: 600; --nyd-font-bold: 700;
+  --nyd-radius-sm: 4px; --nyd-radius-md: 6px; --nyd-radius-lg: 8px;
+  --nyd-radius-xl: 12px; --nyd-radius-full: 9999px;
+  --nyd-duration-fast: 100ms; --nyd-ease-inout: cubic-bezier(.4,0,.2,1);
+  --nyd-shadow-sm: 0 1px 3px rgba(0,0,0,.1);
+  --nyd-font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* Inline component CSS (so preview works without loading nyd.css) */
+.p-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 6px; padding: 8px 16px; font-size: 14px; font-weight: 500;
+  font-family: inherit; line-height: 1.5; border-radius: 8px;
+  border: 1px solid transparent; cursor: pointer; text-decoration: none;
+  white-space: nowrap; transition: background .1s, border-color .1s, color .1s;
+  -webkit-appearance: none;
+}
+.p-btn:disabled { opacity: .5; cursor: not-allowed; }
+.p-btn-primary   { background: #2563eb; color: #fff; border-color: #2563eb; }
+.p-btn-primary:hover:not(:disabled) { background: #1d4ed8; border-color: #1d4ed8; }
+.p-btn-secondary { background: var(--doc-surface); color: var(--doc-text); border-color: var(--doc-border); }
+.p-btn-secondary:hover:not(:disabled) { background: var(--doc-surface-2); }
+.p-btn-outline   { background: transparent; color: #2563eb; border-color: #2563eb; }
+.p-btn-outline:hover:not(:disabled)  { background: #eff6ff; }
+.p-btn-ghost     { background: transparent; color: var(--doc-text); border-color: transparent; }
+.p-btn-ghost:hover:not(:disabled)    { background: var(--doc-surface); }
+.p-btn-danger    { background: #dc2626; color: #fff; border-color: #dc2626; }
+.p-btn-success   { background: #16a34a; color: #fff; border-color: #16a34a; }
+.p-btn-xs        { padding: 3px 9px; font-size: 12px; border-radius: 5px; }
+.p-btn-sm        { padding: 5px 12px; font-size: 13px; }
+.p-btn-lg        { padding: 11px 22px; font-size: 16px; }
+.p-btn-xl        { padding: 14px 28px; font-size: 18px; }
+.p-btn-wide      { width: 100%; }
+.p-badge {
+  display: inline-flex; align-items: center; padding: .15em .55em;
+  font-size: 12px; font-weight: 500; border-radius: 5px; line-height: 1.5;
+  white-space: nowrap; background: var(--doc-surface-2); color: var(--doc-text);
+  border: 1px solid var(--doc-border);
+}
+.p-badge-pill   { border-radius: 9999px; }
+.p-badge-blue   { background: #eff6ff; color: #1d4ed8; border-color: #93c5fd; }
+.p-badge-green  { background: #f0fdf4; color: #15803d; border-color: #86efac; }
+.p-badge-amber  { background: #fffbeb; color: #b45309; border-color: #fcd34d; }
+.p-badge-red    { background: #fef2f2; color: #b91c1c; border-color: #fca5a5; }
+.p-badge-purple { background: #faf5ff; color: #7e22ce; border-color: #d8b4fe; }
+.p-input {
+  display: block; width: 100%; padding: 8px 12px; font-size: 14px;
+  font-family: inherit; line-height: 1.5; color: var(--doc-text);
+  background: var(--doc-bg); border: 1px solid var(--doc-border);
+  border-radius: 8px; transition: border-color .1s, box-shadow .1s;
+  -webkit-appearance: none;
+}
+.p-input::placeholder { color: var(--doc-text-muted); }
+.p-input:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,.15); }
+.p-input-error { border-color: #dc2626; }
+.p-input-error:focus { box-shadow: 0 0 0 3px rgba(220,38,38,.15); }
+.p-label { display: block; font-size: 13px; font-weight: 500; color: var(--doc-text); margin-bottom: 4px; }
+.p-hint  { font-size: 12px; color: var(--doc-text-muted); margin-top: 4px; }
+.p-error { font-size: 12px; color: #dc2626; margin-top: 4px; }
+.p-card {
+  background: var(--doc-bg); border: 1px solid var(--doc-border);
+  border-radius: 12px; overflow: hidden;
+}
+.p-card-body   { padding: 20px; }
+.p-card-header { padding: 16px 20px; border-bottom: 1px solid var(--doc-border); font-weight: 600; }
+.p-card-footer { padding: 14px 20px; border-top: 1px solid var(--doc-border); background: var(--doc-surface); }
+.p-alert {
+  display: flex; gap: 12px; padding: 14px 16px;
+  border-radius: 10px; border: 1px solid; font-size: 14px; line-height: 1.5;
+}
+.p-alert-title { font-weight: 600; margin-bottom: 2px; }
+.p-alert-info    { background: #eff6ff; border-color: #93c5fd; color: #1e40af; }
+.p-alert-success { background: #f0fdf4; border-color: #86efac; color: #15803d; }
+.p-alert-warning { background: #fffbeb; border-color: #fcd34d; color: #92400e; }
+.p-alert-danger  { background: #fef2f2; border-color: #fca5a5; color: #991b1b; }
+.p-progress { width: 100%; height: 8px; background: var(--doc-surface-2); border-radius: 9999px; overflow: hidden; }
+.p-progress-bar { height: 100%; background: #2563eb; border-radius: 9999px; transition: width .3s; }
+.p-spinner {
+  display: inline-block; width: 24px; height: 24px;
+  border: 2px solid var(--doc-border); border-top-color: #2563eb;
+  border-radius: 50%; animation: doc-spin .6s linear infinite;
+}
+@keyframes doc-spin { to { transform: rotate(360deg); } }
+.p-avatar {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; border-radius: 50%; font-size: 14px;
+  font-weight: 600; overflow: hidden; border: 2px solid var(--doc-border); flex-shrink: 0;
+}
+.p-tab-bar { display: flex; border-bottom: 1px solid var(--doc-border); }
+.p-tab {
+  display: inline-flex; align-items: center; padding: 10px 16px; font-size: 14px;
+  font-weight: 500; color: var(--doc-text-muted); text-decoration: none;
+  border-bottom: 2px solid transparent; margin-bottom: -1px; cursor: pointer;
+  background: none; border-left: none; border-right: none; border-top: none;
+  transition: color .1s; white-space: nowrap;
+}
+.p-tab:hover { color: var(--doc-text); }
+.p-tab.active { color: #2563eb; border-bottom-color: #2563eb; }
+.p-skeleton {
+  display: block; background: linear-gradient(90deg, var(--doc-surface) 25%, var(--doc-surface-2) 37%, var(--doc-surface) 63%);
+  background-size: 400% 100%; animation: p-shimmer 1.4s ease infinite; border-radius: 6px;
+}
+@keyframes p-shimmer { 0% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+/* ── SECTION DIVIDER ───────────────────────────────────────────────── */
+.doc-divider {
+  height: 1px;
+  background: var(--doc-border);
+  margin: 48px 0;
+}
+
+/* ── INDEX / HERO ──────────────────────────────────────────────────── */
+.doc-hero {
+  background: linear-gradient(135deg, #0d1117 0%, #161b27 100%);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 14px;
+  padding: 40px 44px;
+  margin-bottom: 40px;
+  position: relative;
+  overflow: hidden;
+}
+.doc-hero::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 280px; height: 280px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(88,166,255,.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.doc-hero-title {
+  font-family: var(--doc-font-display);
+  font-size: 2.6rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: #fff;
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+.doc-hero-title span { color: #58a6ff; }
+.doc-hero-desc {
+  font-size: 16px;
+  color: #8b949e;
+  line-height: 1.65;
+  max-width: 52ch;
+  margin-bottom: 28px;
+}
+.doc-hero-meta { display: flex; flex-wrap: wrap; gap: 10px; }
+.doc-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.1);
+  border-radius: 100px; padding: 5px 12px; font-size: 12.5px;
+  color: #8b949e; font-weight: 500;
+}
+.doc-pill-accent { background: rgba(88,166,255,.12); border-color: rgba(88,166,255,.25); color: #58a6ff; }
+.doc-pill-green  { background: rgba(63,185,80,.1);  border-color: rgba(63,185,80,.2); color: #3fb950; }
+
+/* ── FEATURE GRID ──────────────────────────────────────────────────── */
+.doc-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin: 20px 0 32px;
+}
+.doc-feature-card {
+  background: var(--doc-surface);
+  border: 1px solid var(--doc-border);
+  border-radius: var(--doc-radius);
+  padding: 18px;
+  transition: border-color .15s;
+}
+.doc-feature-card:hover { border-color: var(--doc-blue); }
+.doc-feature-icon { font-size: 1.5rem; margin-bottom: 10px; }
+.doc-feature-title {
+  font-family: var(--doc-font-display);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--doc-text);
+  margin-bottom: 5px;
+}
+.doc-feature-desc { font-size: 13px; color: var(--doc-text-muted); line-height: 1.55; }
+
+/* ── INSTALL BLOCK ─────────────────────────────────────────────────── */
+.doc-install {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--doc-sidebar-bg);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: var(--doc-radius);
+  padding: 12px 18px;
+  font-family: var(--doc-font-mono);
+  font-size: 14px;
+  color: #58a6ff;
+  margin: 16px 0;
+}
+.doc-install-prompt { color: #3fb950; user-select: none; }
+
+/* ── RESPONSIVE ────────────────────────────────────────────────────── */
+@media (max-width: 1200px) {
+  .doc-toc { display: none; }
+}
+@media (max-width: 900px) {
+  .doc-main { padding: 32px 24px 60px; }
+  .doc-nav-search, .doc-nav-links { display: none; }
+  .doc-mobile-menu-btn { display: block; }
+}
+@media (max-width: 768px) {
+  .doc-sidebar {
+    transform: translateX(-100%);
+    transition: transform .25s ease;
+    z-index: 300;
+  }
+  .doc-sidebar.open { transform: translateX(0); }
+  .doc-main { margin-left: 0; padding: 24px 16px 60px; }
+  .doc-hero { padding: 28px 24px; }
+  .doc-hero-title { font-size: 1.9rem; }
+  .doc-preview-body.grid-2,
+  .doc-preview-body.grid-3 { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="doc-topnav">
+  <button class="doc-mobile-menu-btn" onclick="toggleSidebar()" aria-label="Menu">☰</button>
+  <a class="doc-logo" href="#intro"><span>nyd</span>css</a>
+  <span class="doc-logo-badge">v1.0.0</span>
+  <div class="doc-nav-spacer"></div>
+  <div class="doc-nav-search" onclick="focusSearch()">
+    <span>⌕</span>
+    <span>Search docs…</span>
+    <span style="margin-left:auto; font-size:11px; background:rgba(255,255,255,.1); border-radius:4px; padding:1px 6px; color:#6e7681;">⌘K</span>
+  </div>
+  <div class="doc-nav-links">
+    <a href="#getting-started">Docs</a>
+    <a href="#components">Components</a>
+    <a href="https://github.com" target="_blank">GitHub ↗</a>
+  </div>
+  <button class="doc-theme-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle theme">🌙</button>
+</nav>
+
+<!-- SIDEBAR -->
+<aside class="doc-sidebar" id="sidebar">
+  <div class="doc-nav-section">Overview</div>
+  <a class="doc-nav-item" href="#intro">Introduction</a>
+  <a class="doc-nav-item" href="#getting-started">Getting Started</a>
+  <a class="doc-nav-item" href="#architecture">Architecture</a>
+
+  <div class="doc-nav-section">Foundations</div>
+  <a class="doc-nav-item" href="#tokens">Design Tokens</a>
+  <a class="doc-nav-item" href="#colors">Colors</a>
+  <a class="doc-nav-item" href="#typography-tokens">Typography</a>
+  <a class="doc-nav-item" href="#spacing-tokens">Spacing</a>
+  <a class="doc-nav-item" href="#dark-mode">Dark Mode</a>
+  <a class="doc-nav-item" href="#reset">Reset & Normalize</a>
+
+  <div class="doc-nav-section">Layout</div>
+  <a class="doc-nav-item" href="#container">Container</a>
+  <a class="doc-nav-item" href="#grid">Grid</a>
+  <a class="doc-nav-item" href="#flexbox">Flexbox</a>
+  <a class="doc-nav-item" href="#stack">Stack & Cluster</a>
+  <a class="doc-nav-item" href="#sidebar-layout">Sidebar Layout</a>
+
+  <div class="doc-nav-section">Utilities</div>
+  <a class="doc-nav-item" href="#typography-utils">Typography</a>
+  <a class="doc-nav-item" href="#spacing-utils">Spacing</a>
+  <a class="doc-nav-item" href="#color-utils">Colors</a>
+  <a class="doc-nav-item" href="#border-utils">Borders & Radius</a>
+  <a class="doc-nav-item" href="#shadow-utils">Shadows</a>
+  <a class="doc-nav-item" href="#display-utils">Display & Visibility</a>
+
+  <div class="doc-nav-section">Components</div>
+  <a class="doc-nav-item" href="#buttons">Buttons</a>
+  <a class="doc-nav-item" href="#forms">Forms</a>
+  <a class="doc-nav-item" href="#cards">Cards</a>
+  <a class="doc-nav-item" href="#badges">Badges & Chips</a>
+  <a class="doc-nav-item" href="#alerts">Alerts & Callouts</a>
+  <a class="doc-nav-item" href="#nav-components">Navigation</a>
+  <a class="doc-nav-item" href="#tabs">Tabs</a>
+  <a class="doc-nav-item" href="#tables">Tables</a>
+  <a class="doc-nav-item" href="#progress">Progress & Spinners</a>
+  <a class="doc-nav-item" href="#avatars">Avatars</a>
+  <a class="doc-nav-item" href="#tooltips">Tooltips</a>
+  <a class="doc-nav-item" href="#skeletons">Skeletons</a>
+  <a class="doc-nav-item" href="#modals">Modals</a>
+  <a class="doc-nav-item" href="#dropdowns">Dropdowns</a>
+  <a class="doc-nav-item" href="#accordion">Accordion</a>
+  <a class="doc-nav-item" href="#toasts">Toasts</a>
+  <a class="doc-nav-item" href="#stats">Stats / KPIs</a>
+
+  <div class="doc-nav-section">More</div>
+  <a class="doc-nav-item" href="#animations">Animations</a>
+  <a class="doc-nav-item" href="#responsive">Responsive</a>
+  <a class="doc-nav-item" href="#prose">Prose</a>
+  <a class="doc-nav-item" href="#customization">Customization</a>
+  <a class="doc-nav-item" href="#critical-css">Critical CSS</a>
+  <a class="doc-nav-item" href="#browser-support">Browser Support</a>
+</aside>
+
+<!-- MAIN -->
+<main class="doc-main">
+<div class="doc-content">
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     INTRODUCTION
+     ═══════════════════════════════════════════════════════════════════ -->
+<span class="doc-section-anchor" id="intro"></span>
+<div class="doc-hero">
+  <div class="doc-hero-title"><span>nyd</span>css</div>
+  <div class="doc-hero-desc">A modern, composable CSS framework that synthesizes the strongest ideas from 20+ leading CSS libraries into one cohesive, zero-dependency stylesheet.</div>
+  <div class="doc-hero-meta">
+    <span class="doc-pill doc-pill-accent">v1.0.0</span>
+    <span class="doc-pill doc-pill-green">Zero dependencies</span>
+    <span class="doc-pill">~13KB gzip</span>
+    <span class="doc-pill">Dark mode</span>
+    <span class="doc-pill">CSS variables</span>
+    <span class="doc-pill">MIT license</span>
+  </div>
+</div>
+
+<div class="doc-feature-grid">
+  <div class="doc-feature-card">
+    <div class="doc-feature-icon">🎨</div>
+    <div class="doc-feature-title">Design Tokens</div>
+    <div class="doc-feature-desc">Complete CSS custom property system covering color, spacing, type, shadows, and transitions.</div>
+  </div>
+  <div class="doc-feature-card">
+    <div class="doc-feature-icon">🌗</div>
+    <div class="doc-feature-title">Dark Mode First</div>
+    <div class="doc-feature-desc">Automatic via <code class="ic">prefers-color-scheme</code>. Force with <code class="ic">data-theme</code>.</div>
+  </div>
+  <div class="doc-feature-card">
+    <div class="doc-feature-icon">📐</div>
+    <div class="doc-feature-title">Modular Layers</div>
+    <div class="doc-feature-desc">Import only tokens, reset, layout, or components. Critical CSS friendly.</div>
+  </div>
+  <div class="doc-feature-card">
+    <div class="doc-feature-icon">⚡</div>
+    <div class="doc-feature-title">Zero Build Step</div>
+    <div class="doc-feature-desc">Drop in a single <code class="ic">&lt;link&gt;</code> tag. No Webpack, PostCSS, or CLI required.</div>
+  </div>
+  <div class="doc-feature-card">
+    <div class="doc-feature-icon">🧩</div>
+    <div class="doc-feature-title">30+ Components</div>
+    <div class="doc-feature-desc">Buttons, forms, cards, nav, modals, tables, and more — all accessible.</div>
+  </div>
+  <div class="doc-feature-card">
+    <div class="doc-feature-icon">🎭</div>
+    <div class="doc-feature-title">Themeable</div>
+    <div class="doc-feature-desc">Override any token at any scope. Rebrand everything with a dozen CSS variables.</div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     GETTING STARTED
+     ═══════════════════════════════════════════════════════════════════ -->
+<span class="doc-section-anchor" id="getting-started"></span>
+<h2 class="doc-h2">Getting Started</h2>
+
+<h3 class="doc-h3">CDN — fastest way to start</h3>
+<p class="doc-p">Add one line to your <code class="ic">&lt;head&gt;</code> and you're done:</p>
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre">&lt;link rel="stylesheet" href="https://unpkg.com/<span class="tok-string">nydcss</span>/dist/nyd.css"&gt;</pre>
+</div>
+
+<p class="doc-p">For production, use the minified build (~13KB gzip):</p>
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre">&lt;link rel="stylesheet" href="https://unpkg.com/<span class="tok-string">nydcss</span>/dist/nyd.min.css"&gt;</pre>
+</div>
+
+<h3 class="doc-h3">npm</h3>
+<div class="doc-install"><span class="doc-install-prompt">$</span> npm install nydcss</div>
+
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">css</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre"><span class="tok-comment">/* Import everything */</span>
+<span class="tok-at">@import</span> <span class="tok-string">"nydcss/dist/nyd.css"</span>;
+
+<span class="tok-comment">/* Or cherry-pick layers (critical CSS pattern) */</span>
+<span class="tok-at">@import</span> <span class="tok-string">"nydcss/src/nyd-tokens.css"</span>;
+<span class="tok-at">@import</span> <span class="tok-string">"nydcss/src/nyd-reset.css"</span>;
+<span class="tok-at">@import</span> <span class="tok-string">"nydcss/src/nyd-layout.css"</span>;
+<span class="tok-at">@import</span> <span class="tok-string">"nydcss/src/nyd-components.css"</span>;</pre>
+</div>
+
+<h3 class="doc-h3">Minimal HTML boilerplate</h3>
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="<span class="tok-string">UTF-8</span>"&gt;
+  &lt;meta name="viewport" content="<span class="tok-string">width=device-width, initial-scale=1.0</span>"&gt;
+  &lt;title&gt;My App&lt;/title&gt;
+  &lt;link rel="stylesheet" href="<span class="tok-string">nyd.css</span>"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="<span class="tok-class">container</span>"&gt;
+    &lt;h1&gt;Hello, nydcss&lt;/h1&gt;
+    &lt;button class="<span class="tok-class">btn btn-primary</span>"&gt;Get started&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+</div>
+
+<div class="doc-note doc-note-tip">
+  <span class="doc-note-icon">✅</span>
+  <div class="doc-note-body"><strong>No JavaScript needed.</strong> All components work with pure CSS. JavaScript is only needed for interactive behavior like modals, dropdowns, and accordions — and those are tiny, framework-agnostic snippets you write yourself.</div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     ARCHITECTURE
+     ═══════════════════════════════════════════════════════════════════ -->
+<span class="doc-section-anchor" id="architecture"></span>
+<h2 class="doc-h2">Architecture</h2>
+<p class="doc-p">nydcss is organized into eight independent layers. Each layer imports cleanly from the previous. You can stop at any layer.</p>
+
+<table class="doc-table">
+  <thead><tr><th>Layer</th><th>File</th><th>What it does</th></tr></thead>
+  <tbody>
+    <tr><td>1 · Tokens</td><td><code class="ic">nyd-tokens.css</code></td><td>All CSS custom properties — colors, spacing, type, shadows, z-index, transitions</td></tr>
+    <tr><td>2 · Reset</td><td><code class="ic">nyd-reset.css</code></td><td>Cross-browser normalize, box-sizing, focus-visible, selection, scroll-behavior</td></tr>
+    <tr><td>3 · Base</td><td><code class="ic">nyd-base.css</code></td><td>Styled semantic HTML: headings, blockquote, code, kbd, mark, table. Plus <code class="ic">.nyd-prose</code></td></tr>
+    <tr><td>4 · Layout</td><td><code class="ic">nyd-layout.css</code></td><td>Container, flexbox, grid, auto-grid, gap, stack, cluster, sidebar</td></tr>
+    <tr><td>5 · Utilities</td><td><code class="ic">nyd-utilities.css</code></td><td>Margin, padding, width, height, text, font, color, border, radius, shadow, opacity</td></tr>
+    <tr><td>6 · Components</td><td><code class="ic">nyd-components.css</code></td><td>30+ UI components: buttons, forms, cards, nav, tables, modals, toasts, and more</td></tr>
+    <tr><td>7 · Animations</td><td><code class="ic">nyd-animations.css</code></td><td>15 keyframes + utility classes + transition + transform utilities</td></tr>
+    <tr><td>8 · Responsive</td><td><code class="ic">nyd-responsive.css</code></td><td>Breakpoint prefixes (sm: md: lg: xl:), visibility helpers, print, dark mode helpers</td></tr>
+  </tbody>
+</table>
+
+<div class="doc-note doc-note-info">
+  <span class="doc-note-icon">💡</span>
+  <div class="doc-note-body"><strong>Specificity philosophy:</strong> nydcss uses flat, single-class selectors throughout. No <code class="ic">!important</code> (except the intentional <code class="ic">.hidden</code> override). Overriding any style is straightforward.</div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     DESIGN TOKENS
+     ═══════════════════════════════════════════════════════════════════ -->
+<span class="doc-section-anchor" id="tokens"></span>
+<h2 class="doc-h2">Design Tokens</h2>
+<p class="doc-p">Every visual decision in nydcss is expressed as a CSS custom property. Override any token globally at <code class="ic">:root</code> or locally at any element scope to create custom themes without touching the source.</p>
+
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">css</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre"><span class="tok-comment">/* Global rebrand — purple theme */</span>
+<span class="tok-selector">:root</span> {
+  <span class="tok-prop">--nyd-color-primary</span>:       <span class="tok-value">#7c3aed</span>;
+  <span class="tok-prop">--nyd-color-primary-hover</span>: <span class="tok-value">#6d28d9</span>;
+  <span class="tok-prop">--nyd-color-primary-light</span>: <span class="tok-value">#faf5ff</span>;
+  <span class="tok-prop">--nyd-color-primary-alpha</span>: <span class="tok-value">rgba(124, 58, 237, 0.15)</span>;
+  <span class="tok-prop">--nyd-font-sans</span>: <span class="tok-value">'Inter', system-ui, sans-serif</span>;
+  <span class="tok-prop">--nyd-radius-lg</span>: <span class="tok-value">12px</span>;
+}
+
+<span class="tok-comment">/* Scoped — only inside .admin-panel */</span>
+<span class="tok-selector">.admin-panel</span> {
+  <span class="tok-prop">--nyd-color-primary</span>: <span class="tok-value">#0ea5e9</span>;
+}</pre>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     COLORS
+     ═══════════════════════════════════════════════════════════════════ -->
+<span class="doc-section-anchor" id="colors"></span>
+<h2 class="doc-h2">Colors</h2>
+
+<h3 class="doc-h3">Semantic aliases</h3>
+<p class="doc-p">Use semantic tokens in your own code — not raw palette values. Semantic tokens automatically adapt to dark mode.</p>
+
+<table class="doc-table">
+  <thead><tr><th>Token</th><th>Light value</th><th>Dark value</th><th>Usage</th></tr></thead>
+  <tbody>
+    <tr><td><code class="ic">--nyd-color-primary</code></td><td>#2563eb</td><td>#60a5fa</td><td>CTAs, links, focus rings</td></tr>
+    <tr><td><code class="ic">--nyd-color-text</code></td><td>#111827</td><td>#f0f0f0</td><td>Body text</td></tr>
+    <tr><td><code class="ic">--nyd-color-text-muted</code></td><td>#6b7280</td><td>#9ca3af</td><td>Supporting, metadata</td></tr>
+    <tr><td><code class="ic">--nyd-color-bg</code></td><td>#ffffff</td><td>#0f1117</td><td>Page background</td></tr>
+    <tr><td><code class="ic">--nyd-color-surface</code></td><td>#ffffff</td><td>#161b27</td><td>Card, modal background</td></tr>
+    <tr><td><code class="ic">--nyd-color-surface-2</code></td><td>#f9fafb</td><td>#1d2333</td><td>Subtle surfaces, code bg</td></tr>
+    <tr><td><code class="ic">--nyd-color-border</code></td><td>#e5e7eb</td><td>rgba(255,255,255,.1)</td><td>Dividers, borders</td></tr>
+    <tr><td><code class="ic">--nyd-color-success</code></td><td>#16a34a</td><td>#4ade80</td><td>Confirmations</td></tr>
+    <tr><td><code class="ic">--nyd-color-warning</code></td><td>#f59e0b</td><td>#fbbf24</td><td>Cautions</td></tr>
+    <tr><td><code class="ic">--nyd-color-danger</code></td><td>#dc2626</td><td>#f87171</td><td>Errors, destructive</td></tr>
+  </tbody>
+</table>
+
+<h3 class="doc-h3">Raw palette</h3>
+<p class="doc-p">nydcss ships a full 7-stop palette for each color family. Use the semantic aliases above in production — raw palette values are for building new semantic tokens.</p>
+<div class="doc-swatch-grid">
+  <div class="doc-swatch"><div class="doc-swatch-color" style="background:#3b82f6"></div><div class="doc-swatch-info"><span class="doc-swatch-name">Blue 500</span><span class="doc-swatch-hex">--nyd-blue-500</span></div></div>
+  <div class="doc-swatch"><div class="doc-swatch-color" style="background:#22c55e"></div><div class="doc-swatch-info"><span class="doc-swatch-name">Green 500</span><span class="doc-swatch-hex">--nyd-green-500</span></div></div>
+  <div class="doc-swatch"><div class="doc-swatch-color" style="background:#ef4444"></div><div class="doc-swatch-info"><span class="doc-swatch-name">Red 500</span><span class="doc-swatch-hex">--nyd-red-500</span></div></div>
+  <div class="doc-swatch"><div class="doc-swatch-color" style="background:#f59e0b"></div><div class="doc-swatch-info"><span class="doc-swatch-name">Amber 500</span><span class="doc-swatch-hex">--nyd-amber-500</span></div></div>
+  <div class="doc-swatch"><div class="doc-swatch-color" style="background:#a855f7"></div><div class="doc-swatch-info"><span class="doc-swatch-name">Purple 500</span><span class="doc-swatch-hex">--nyd-purple-500</span></div></div>
+  <div class="doc-swatch"><div class="doc-swatch-color" style="background:#6b7280"></div><div class="doc-swatch-info"><span class="doc-swatch-name">Gray 500</span><span class="doc-swatch-hex">--nyd-gray-500</span></div></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     TYPOGRAPHY TOKENS
+     ═══════════════════════════════════════════════════════════════════ -->
+<span class="doc-section-anchor" id="typography-tokens"></span>
+<h2 class="doc-h2">Typography Tokens</h2>
+
+<h3 class="doc-h3">Type scale</h3>
+<div class="doc-token-list">
+  <div class="doc-token-row"><span class="doc-token-name">--nyd-text-xs</span><span class="doc-token-val">0.75rem · 12px</span></div>
+  <div class="doc-token-row"><span class="doc-token-name">--nyd-text-sm</span><span class="doc-token-val">0.875rem · 14px</span></div>
+  <div class="doc-token-row"><span class="doc-token-name">--nyd-text-base</span><span class="doc-token-val">1rem · 16px</span></div>
+  <div class="doc-token-row"><span class="doc-token-name">--nyd-text-md</span><span class="doc-token-val">1.125rem · 18px</span></div>
+  <div class="doc-token-row"><span class="doc-token-name">--nyd-text-lg</span><span class="doc-token-val">1.25rem · 20px</span></div>
+  <div class="doc-token-row"><span class="doc-token-name">--nyd-text-xl</span><span class="doc-token-val">1.5rem · 24px</span></div>
+  <div class="doc-token-row"><span class="doc-token-name">--nyd-text-2xl</span><span class="doc-token-val">1.875rem · 30px</span></div>
+  <div class="doc-token-row"><span class="doc-token-name">--nyd-text-3xl</span><span class="doc-token-val">2.25rem · 36px</span></div>
+  <div class="doc-token-row"><span class="doc-token-name">--nyd-text-4xl</span><span class="doc-token-val">3rem · 48px</span></div>
+</div>
+
+<h3 class="doc-h3">Font stacks</h3>
+<div class="doc-token-list">
+  <div class="doc-token-row"><span class="doc-token-name">--nyd-font-sans</span><span class="doc-token-val">system-ui, -apple-system…</span></div>
+  <div class="doc-token-row"><span class="doc-token-name">--nyd-font-serif</span><span class="doc-token-val">Georgia, Cambria…</span></div>
+  <div class="doc-token-row"><span class="doc-token-name">--nyd-font-mono</span><span class="doc-token-val">ui-monospace, Cascadia Code…</span></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     SPACING TOKENS
+     ═══════════════════════════════════════════════════════════════════ -->
+<span class="doc-section-anchor" id="spacing-tokens"></span>
+<h2 class="doc-h2">Spacing Scale</h2>
+<p class="doc-p">A consistent, multiplier-based spacing scale. All spacing utilities (<code class="ic">.m-4</code>, <code class="ic">.p-6</code>, etc.) reference these tokens.</p>
+
+<div style="border:1px solid var(--doc-border); border-radius:var(--doc-radius); padding:20px; background:var(--doc-surface); margin:14px 0;">
+  <div class="doc-space-item"><span class="doc-space-label">--nyd-space-1</span><div class="doc-space-bar" style="width:4px"></div><span class="doc-space-val">4px</span></div>
+  <div class="doc-space-item"><span class="doc-space-label">--nyd-space-2</span><div class="doc-space-bar" style="width:8px"></div><span class="doc-space-val">8px</span></div>
+  <div class="doc-space-item"><span class="doc-space-label">--nyd-space-3</span><div class="doc-space-bar" style="width:12px"></div><span class="doc-space-val">12px</span></div>
+  <div class="doc-space-item"><span class="doc-space-label">--nyd-space-4</span><div class="doc-space-bar" style="width:16px"></div><span class="doc-space-val">16px</span></div>
+  <div class="doc-space-item"><span class="doc-space-label">--nyd-space-6</span><div class="doc-space-bar" style="width:24px"></div><span class="doc-space-val">24px</span></div>
+  <div class="doc-space-item"><span class="doc-space-label">--nyd-space-8</span><div class="doc-space-bar" style="width:32px"></div><span class="doc-space-val">32px</span></div>
+  <div class="doc-space-item"><span class="doc-space-label">--nyd-space-12</span><div class="doc-space-bar" style="width:48px"></div><span class="doc-space-val">48px</span></div>
+  <div class="doc-space-item"><span class="doc-space-label">--nyd-space-16</span><div class="doc-space-bar" style="width:64px"></div><span class="doc-space-val">64px</span></div>
+  <div class="doc-space-item"><span class="doc-space-label">--nyd-space-24</span><div class="doc-space-bar" style="width:96px"></div><span class="doc-space-val">96px</span></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     DARK MODE
+     ═══════════════════════════════════════════════════════════════════ -->
+<span class="doc-section-anchor" id="dark-mode"></span>
+<h2 class="doc-h2">Dark Mode</h2>
+<p class="doc-p">nydcss uses CSS custom properties to implement dark mode. By default it respects the user's system preference via <code class="ic">prefers-color-scheme: dark</code>.</p>
+
+<h3 class="doc-h3">Force a theme</h3>
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre"><span class="tok-comment">&lt;!-- Always dark --&gt;</span>
+&lt;html <span class="tok-prop">data-theme</span>="<span class="tok-string">dark</span>"&gt;
+
+<span class="tok-comment">&lt;!-- Always light --&gt;</span>
+&lt;html <span class="tok-prop">data-theme</span>="<span class="tok-string">light</span>"&gt;
+
+<span class="tok-comment">&lt;!-- Follow system (default) --&gt;</span>
+&lt;html&gt;</pre>
+</div>
+
+<h3 class="doc-h3">Toggle with JavaScript</h3>
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">js</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre"><span class="tok-at">function</span> toggleTheme() {
+  <span class="tok-prop">const</span> html = document.documentElement;
+  <span class="tok-prop">const</span> isDark = html.dataset.theme === <span class="tok-string">'dark'</span>;
+  html.dataset.theme = isDark ? <span class="tok-string">'light'</span> : <span class="tok-string">'dark'</span>;
+  <span class="tok-comment">// Persist preference</span>
+  localStorage.setItem(<span class="tok-string">'theme'</span>, html.dataset.theme);
+}
+
+<span class="tok-comment">// Restore saved preference on load</span>
+<span class="tok-at">const</span> saved = localStorage.getItem(<span class="tok-string">'theme'</span>);
+<span class="tok-at">if</span> (saved) document.documentElement.dataset.theme = saved;</pre>
+</div>
+
+<h3 class="doc-h3">Component-level dark override</h3>
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">css</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre"><span class="tok-comment">/* Force dark appearance for one component */</span>
+<span class="tok-selector">.my-dark-card</span> {
+  <span class="tok-prop">--nyd-color-surface</span>:    <span class="tok-value">#161b27</span>;
+  <span class="tok-prop">--nyd-color-text</span>:       <span class="tok-value">#e6edf3</span>;
+  <span class="tok-prop">--nyd-color-border</span>:     <span class="tok-value">rgba(255,255,255,.1)</span>;
+}</pre>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     RESET
+     ═══════════════════════════════════════════════════════════════════ -->
+<span class="doc-section-anchor" id="reset"></span>
+<h2 class="doc-h2">Reset &amp; Normalize</h2>
+<p class="doc-p">nydcss applies an opinionated reset inspired by <strong>normalize.css</strong>, <strong>sanitize.css</strong>, and modern browser conventions. You get:</p>
+<table class="doc-table">
+  <thead><tr><th>Feature</th><th>Detail</th></tr></thead>
+  <tbody>
+    <tr><td>Universal box-sizing</td><td><code class="ic">box-sizing: border-box</code> on <code class="ic">*, *::before, *::after</code></td></tr>
+    <tr><td>Zero margins</td><td>All elements start with <code class="ic">margin: 0; padding: 0</code></td></tr>
+    <tr><td>Responsive media</td><td><code class="ic">img, video, svg</code> → <code class="ic">max-width: 100%</code></td></tr>
+    <tr><td>Font inheritance</td><td>Buttons and inputs inherit the document font</td></tr>
+    <tr><td>Focus visible</td><td><code class="ic">:focus-visible</code> ring, <code class="ic">:focus:not(:focus-visible)</code> suppressed</td></tr>
+    <tr><td>Smooth scrolling</td><td><code class="ic">scroll-behavior: smooth</code> on <code class="ic">html</code></td></tr>
+    <tr><td>Font smoothing</td><td><code class="ic">-webkit-font-smoothing: antialiased</code></td></tr>
+    <tr><td>Disabled states</td><td>Automatic <code class="ic">cursor: not-allowed; opacity: .5</code></td></tr>
+    <tr><td>Selection color</td><td>Uses <code class="ic">--nyd-color-primary-alpha</code></td></tr>
+  </tbody>
+</table>
+
+<div class="doc-note doc-note-info">
+  <span class="doc-note-icon">ℹ️</span>
+  <div class="doc-note-body">The reset is designed to be non-destructive. It does not strip list styles from <code class="ic">&lt;ul&gt;</code> elements globally — only the utility class <code class="ic">.list-none</code> does that.</div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     CONTAINER
+     ═══════════════════════════════════════════════════════════════════ -->
+<span class="doc-section-anchor" id="container"></span>
+<h2 class="doc-h2">Container</h2>
+<p class="doc-p">Responsive centered containers with sensible max-widths at each breakpoint.</p>
+
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre"><span class="tok-comment">&lt;!-- Responsive container (auto max-width per breakpoint) --&gt;</span>
+&lt;div class="<span class="tok-class">container</span>"&gt;…&lt;/div&gt;
+
+<span class="tok-comment">&lt;!-- Fixed-width containers --&gt;</span>
+&lt;div class="<span class="tok-class">container-xs</span>"&gt;…&lt;/div&gt;   <span class="tok-comment">&lt;!-- 480px --&gt;</span>
+&lt;div class="<span class="tok-class">container-sm</span>"&gt;…&lt;/div&gt;   <span class="tok-comment">&lt;!-- 640px --&gt;</span>
+&lt;div class="<span class="tok-class">container-md</span>"&gt;…&lt;/div&gt;   <span class="tok-comment">&lt;!-- 768px --&gt;</span>
+&lt;div class="<span class="tok-class">container-lg</span>"&gt;…&lt;/div&gt;   <span class="tok-comment">&lt;!-- 1024px --&gt;</span>
+&lt;div class="<span class="tok-class">container-xl</span>"&gt;…&lt;/div&gt;   <span class="tok-comment">&lt;!-- 1280px --&gt;</span>
+&lt;div class="<span class="tok-class">container-prose</span>"&gt;…&lt;/div&gt; <span class="tok-comment">&lt;!-- 65ch, readable --&gt;</span>
+&lt;div class="<span class="tok-class">container-full</span>"&gt;…&lt;/div&gt;  <span class="tok-comment">&lt;!-- 100% width --&gt;</span></pre>
+</div>
+
+<table class="doc-table">
+  <thead><tr><th>Class</th><th>Max-width</th><th>Padding</th></tr></thead>
+  <tbody>
+    <tr><td><code class="ic">.container</code></td><td>Responsive (640→1536px)</td><td>1rem → 2rem</td></tr>
+    <tr><td><code class="ic">.container-prose</code></td><td>65ch</td><td>1rem</td></tr>
+    <tr><td><code class="ic">.container-sm</code></td><td>640px</td><td>1rem</td></tr>
+    <tr><td><code class="ic">.container-lg</code></td><td>1024px</td><td>1rem</td></tr>
+  </tbody>
+</table>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     GRID
+     ═══════════════════════════════════════════════════════════════════ -->
+<span class="doc-section-anchor" id="grid"></span>
+<h2 class="doc-h2">Grid</h2>
+<p class="doc-p">CSS Grid utilities for fixed-column and fluid auto-fit layouts.</p>
+
+<h3 class="doc-h3">Fixed columns</h3>
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre">&lt;div class="<span class="tok-class">grid grid-cols-3 gap-6</span>"&gt;
+  &lt;div&gt;Column 1&lt;/div&gt;
+  &lt;div&gt;Column 2&lt;/div&gt;
+  &lt;div&gt;Column 3&lt;/div&gt;
+&lt;/div&gt;</pre>
+</div>
+
+<h3 class="doc-h3">Auto-fit fluid grid (recommended)</h3>
+<p class="doc-p">No breakpoints needed — columns wrap naturally when they won't fit:</p>
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre">&lt;div class="<span class="tok-class">auto-grid-sm</span>"&gt;…&lt;/div&gt;  <span class="tok-comment">&lt;!-- min 160px --&gt;</span>
+&lt;div class="<span class="tok-class">auto-grid-md</span>"&gt;…&lt;/div&gt;  <span class="tok-comment">&lt;!-- min 220px --&gt;</span>
+&lt;div class="<span class="tok-class">auto-grid-lg</span>"&gt;…&lt;/div&gt;  <span class="tok-comment">&lt;!-- min 280px --&gt;</span>
+&lt;div class="<span class="tok-class">auto-grid-xl</span>"&gt;…&lt;/div&gt;  <span class="tok-comment">&lt;!-- min 320px --&gt;</span></pre>
+</div>
+
+<h3 class="doc-h3">Responsive with breakpoint prefixes</h3>
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre">&lt;div class="<span class="tok-class">grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6</span>"&gt;
+  …
+&lt;/div&gt;</pre>
+</div>
+
+<h3 class="doc-h3">Column span</h3>
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre">&lt;div class="<span class="tok-class">grid grid-cols-12 gap-4</span>"&gt;
+  &lt;div class="<span class="tok-class">col-span-8</span>"&gt;Main content&lt;/div&gt;
+  &lt;div class="<span class="tok-class">col-span-4</span>"&gt;Sidebar&lt;/div&gt;
+&lt;/div&gt;</pre>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     FLEXBOX
+     ═══════════════════════════════════════════════════════════════════ -->
+<span class="doc-section-anchor" id="flexbox"></span>
+<h2 class="doc-h2">Flexbox</h2>
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre"><span class="tok-comment">&lt;!-- Horizontal bar with space between --&gt;</span>
+&lt;div class="<span class="tok-class">flex items-center justify-between gap-4</span>"&gt;
+  &lt;span&gt;Left&lt;/span&gt;
+  &lt;span&gt;Right&lt;/span&gt;
+&lt;/div&gt;
+
+<span class="tok-comment">&lt;!-- Centered card --&gt;</span>
+&lt;div class="<span class="tok-class">flex items-center justify-center min-h-screen</span>"&gt;
+  &lt;div class="<span class="tok-class">card</span>"&gt;…&lt;/div&gt;
+&lt;/div&gt;
+
+<span class="tok-comment">&lt;!-- Sidebar that pushes button to end --&gt;</span>
+&lt;div class="<span class="tok-class">flex flex-col h-full</span>"&gt;
+  &lt;nav class="<span class="tok-class">flex-1</span>"&gt;…&lt;/nav&gt;
+  &lt;button class="<span class="tok-class">btn btn-primary mt-auto</span>"&gt;Upgrade&lt;/button&gt;
+&lt;/div&gt;</pre>
+</div>
+
+<table class="doc-table">
+  <thead><tr><th>Class</th><th>Property</th></tr></thead>
+  <tbody>
+    <tr><td><code class="ic">.flex</code></td><td><code class="ic">display: flex</code></td></tr>
+    <tr><td><code class="ic">.flex-col</code></td><td><code class="ic">flex-direction: column</code></td></tr>
+    <tr><td><code class="ic">.flex-wrap</code></td><td><code class="ic">flex-wrap: wrap</code></td></tr>
+    <tr><td><code class="ic">.items-center</code></td><td><code class="ic">align-items: center</code></td></tr>
+    <tr><td><code class="ic">.justify-between</code></td><td><code class="ic">justify-content: space-between</code></td></tr>
+    <tr><td><code class="ic">.flex-1</code></td><td><code class="ic">flex: 1 1 0%</code></td></tr>
+    <tr><td><code class="ic">.shrink-0</code></td><td><code class="ic">flex-shrink: 0</code></td></tr>
+    <tr><td><code class="ic">.grow</code></td><td><code class="ic">flex-grow: 1</code></td></tr>
+  </tbody>
+</table>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     STACK & CLUSTER
+     ═══════════════════════════════════════════════════════════════════ -->
+<span class="doc-section-anchor" id="stack"></span>
+<h2 class="doc-h2">Stack &amp; Cluster</h2>
+
+<h3 class="doc-h3">Stack — vertical rhythm</h3>
+<p class="doc-p">Adds consistent top margin between direct children. Inspired by the "lobotomized owl" CSS pattern.</p>
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre">&lt;div class="<span class="tok-class">stack-6</span>"&gt;
+  &lt;h2&gt;Section title&lt;/h2&gt;
+  &lt;p&gt;Paragraph — auto 24px below heading&lt;/p&gt;
+  &lt;p&gt;Next paragraph — auto 24px below previous&lt;/p&gt;
+&lt;/div&gt;
+
+<span class="tok-comment">&lt;!-- Available: .stack-2 .stack-4 .stack-6 .stack-8 --&gt;</span></pre>
+</div>
+
+<h3 class="doc-h3">Cluster — inline flex group</h3>
+<p class="doc-p">A flex row that wraps and maintains consistent gap — perfect for tag groups and button sets.</p>
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre">&lt;div class="<span class="tok-class">cluster</span>"&gt;
+  &lt;span class="<span class="tok-class">badge</span>"&gt;React&lt;/span&gt;
+  &lt;span class="<span class="tok-class">badge</span>"&gt;TypeScript&lt;/span&gt;
+  &lt;span class="<span class="tok-class">badge</span>"&gt;CSS&lt;/span&gt;
+&lt;/div&gt;</pre>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     SIDEBAR LAYOUT
+     ═══════════════════════════════════════════════════════════════════ -->
+<span class="doc-section-anchor" id="sidebar-layout"></span>
+<h2 class="doc-h2">Sidebar Layout</h2>
+<p class="doc-p">A flex-based two-column layout where the sidebar has a fixed width and the main content takes the remainder. Automatically stacks on narrow viewports.</p>
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre">&lt;div class="<span class="tok-class">with-sidebar</span>"&gt;
+  &lt;aside&gt;Sidebar (260px by default)&lt;/aside&gt;
+  &lt;main&gt;Main content (takes the rest, min 50% wide)&lt;/main&gt;
+&lt;/div&gt;
+
+<span class="tok-comment">&lt;!-- Custom sidebar width --&gt;</span>
+&lt;div class="<span class="tok-class">with-sidebar</span>" style="<span class="tok-prop">--nyd-sidebar-width</span>: <span class="tok-value">320px</span>"&gt;</pre>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     TYPOGRAPHY UTILITIES
+     ═══════════════════════════════════════════════════════════════════ -->
+<span class="doc-section-anchor" id="typography-utils"></span>
+<h2 class="doc-h2">Typography Utilities</h2>
+
+<div class="doc-preview">
+  <div class="doc-preview-bar"><span class="doc-preview-dot"></span>Preview</div>
+  <div class="doc-preview-body col">
+    <p style="font-size:30px;font-weight:700;letter-spacing:-.02em;color:var(--doc-text)">.text-2xl .font-bold .tracking-tight</p>
+    <p style="font-size:20px;font-weight:500;color:var(--doc-text)">.text-lg .font-medium — Lead paragraph style</p>
+    <p style="font-size:15px;color:var(--doc-text-muted);line-height:1.65">.text-base .text-muted .leading-relaxed — Body copy for reading comfort</p>
+    <p style="font-size:12px;color:var(--doc-text-muted);text-transform:uppercase;letter-spacing:.1em;font-weight:600">.text-xs .uppercase .tracking-wider .font-semibold — LABEL STYLE</p>
+    <code style="font-family:monospace;font-size:13px;background:var(--doc-surface);border:1px solid var(--doc-border);border-radius:4px;padding:2px 8px">.font-mono — code or data value</code>
+  </div>
+</div>
+
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre"><span class="tok-comment">&lt;!-- Size --&gt;</span>
+&lt;p class="<span class="tok-class">text-sm</span>"&gt;Small&lt;/p&gt;
+&lt;p class="<span class="tok-class">text-lg</span>"&gt;Large&lt;/p&gt;
+&lt;p class="<span class="tok-class">text-3xl</span>"&gt;Display&lt;/p&gt;
+
+<span class="tok-comment">&lt;!-- Weight --&gt;</span>
+&lt;p class="<span class="tok-class">font-normal</span>"&gt;&lt;p class="<span class="tok-class">font-medium</span>"&gt;&lt;p class="<span class="tok-class">font-bold</span>"&gt;
+
+<span class="tok-comment">&lt;!-- Color --&gt;</span>
+&lt;p class="<span class="tok-class">text-muted</span>"&gt;&lt;p class="<span class="tok-class">text-primary</span>"&gt;&lt;p class="<span class="tok-class">text-danger</span>"&gt;
+
+<span class="tok-comment">&lt;!-- Transform --&gt;</span>
+&lt;p class="<span class="tok-class">uppercase tracking-wider</span>"&gt;
+&lt;p class="<span class="tok-class">truncate</span>"&gt;Long text that gets cut off with an ellipsis&lt;/p&gt;</pre>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     SPACING UTILITIES
+     ═══════════════════════════════════════════════════════════════════ -->
+<span class="doc-section-anchor" id="spacing-utils"></span>
+<h2 class="doc-h2">Spacing Utilities</h2>
+<p class="doc-p">Margin and padding utilities follow the pattern <code class="ic">{property}{side}-{size}</code>.</p>
+<table class="doc-table">
+  <thead><tr><th>Prefix</th><th>Property</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr><td><code class="ic">m-</code></td><td>margin (all sides)</td><td><code class="ic">.m-4</code> → <code class="ic">margin: 1rem</code></td></tr>
+    <tr><td><code class="ic">mx-</code></td><td>margin left + right</td><td><code class="ic">.mx-auto</code> → center</td></tr>
+    <tr><td><code class="ic">my-</code></td><td>margin top + bottom</td><td><code class="ic">.my-8</code></td></tr>
+    <tr><td><code class="ic">mt- mb- ml- mr-</code></td><td>single side margin</td><td><code class="ic">.mt-6</code></td></tr>
+    <tr><td><code class="ic">p-</code></td><td>padding (all sides)</td><td><code class="ic">.p-5</code> → <code class="ic">padding: 1.25rem</code></td></tr>
+    <tr><td><code class="ic">px-</code></td><td>padding left + right</td><td><code class="ic">.px-4</code></td></tr>
+    <tr><td><code class="ic">py-</code></td><td>padding top + bottom</td><td><code class="ic">.py-3</code></td></tr>
+    <tr><td><code class="ic">pt- pb- pl- pr-</code></td><td>single side padding</td><td><code class="ic">.pb-8</code></td></tr>
+  </tbody>
+</table>
+<p class="doc-p">Available sizes: <code class="ic">0  0.5  1  2  3  4  5  6  7  8  10  12  14  16  20  24  32  40  48  64</code> (plus <code class="ic">auto</code> for margins).</p>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     BORDER & RADIUS
+     ═══════════════════════════════════════════════════════════════════ -->
+<span class="doc-section-anchor" id="border-utils"></span>
+<h2 class="doc-h2">Borders &amp; Radius</h2>
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre"><span class="tok-comment">&lt;!-- Border --&gt;</span>
+&lt;div class="<span class="tok-class">border</span>"&gt;             <span class="tok-comment">&lt;!-- 1px border --&gt;</span>
+&lt;div class="<span class="tok-class">border-2</span>"&gt;           <span class="tok-comment">&lt;!-- 2px border --&gt;</span>
+&lt;div class="<span class="tok-class">border-t border-b</span>"&gt;  <span class="tok-comment">&lt;!-- top + bottom only --&gt;</span>
+&lt;div class="<span class="tok-class">border-primary</span>"&gt;      <span class="tok-comment">&lt;!-- semantic color --&gt;</span>
+&lt;div class="<span class="tok-class">border-0</span>"&gt;           <span class="tok-comment">&lt;!-- remove border --&gt;</span>
+
+<span class="tok-comment">&lt;!-- Radius --&gt;</span>
+&lt;div class="<span class="tok-class">rounded-sm</span>"&gt;    <span class="tok-comment">&lt;!-- 4px --&gt;</span>
+&lt;div class="<span class="tok-class">rounded</span>"&gt;       <span class="tok-comment">&lt;!-- 6px --&gt;</span>
+&lt;div class="<span class="tok-class">rounded-lg</span>"&gt;    <span class="tok-comment">&lt;!-- 8px --&gt;</span>
+&lt;div class="<span class="tok-class">rounded-xl</span>"&gt;    <span class="tok-comment">&lt;!-- 12px --&gt;</span>
+&lt;div class="<span class="tok-class">rounded-2xl</span>"&gt;   <span class="tok-comment">&lt;!-- 16px --&gt;</span>
+&lt;div class="<span class="tok-class">rounded-full</span>"&gt;  <span class="tok-comment">&lt;!-- pill / circle --&gt;</span></pre>
+</div>
+
+<div class="doc-preview">
+  <div class="doc-preview-bar"><span class="doc-preview-dot"></span>Preview</div>
+  <div class="doc-preview-body">
+    <div style="width:52px;height:52px;background:var(--doc-blue);opacity:.2;border:2px solid var(--doc-blue);border-radius:0"></div>
+    <div style="width:52px;height:52px;background:var(--doc-blue);opacity:.2;border:2px solid var(--doc-blue);border-radius:4px"></div>
+    <div style="width:52px;height:52px;background:var(--doc-blue);opacity:.2;border:2px solid var(--doc-blue);border-radius:8px"></div>
+    <div style="width:52px;height:52px;background:var(--doc-blue);opacity:.2;border:2px solid var(--doc-blue);border-radius:12px"></div>
+    <div style="width:52px;height:52px;background:var(--doc-blue);opacity:.2;border:2px solid var(--doc-blue);border-radius:24px"></div>
+    <div style="width:52px;height:52px;background:var(--doc-blue);opacity:.2;border:2px solid var(--doc-blue);border-radius:9999px"></div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     BUTTONS
+     ═══════════════════════════════════════════════════════════════════ -->
+<span class="doc-section-anchor" id="buttons"></span>
+<h2 class="doc-h2">Buttons</h2>
+<p class="doc-p">Compose buttons by combining a base class with variant and size modifiers.</p>
+
+<div class="doc-preview">
+  <div class="doc-preview-bar"><span class="doc-preview-dot"></span>Variants</div>
+  <div class="doc-preview-body">
+    <button class="p-btn p-btn-primary">Primary</button>
+    <button class="p-btn p-btn-secondary">Secondary</button>
+    <button class="p-btn p-btn-outline">Outline</button>
+    <button class="p-btn p-btn-ghost">Ghost</button>
+    <button class="p-btn p-btn-danger">Danger</button>
+    <button class="p-btn p-btn-success">Success</button>
+  </div>
+</div>
+
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre">&lt;button class="<span class="tok-class">btn btn-primary</span>"&gt;Primary&lt;/button&gt;
+&lt;button class="<span class="tok-class">btn btn-secondary</span>"&gt;Secondary&lt;/button&gt;
+&lt;button class="<span class="tok-class">btn btn-outline</span>"&gt;Outline&lt;/button&gt;
+&lt;button class="<span class="tok-class">btn btn-ghost</span>"&gt;Ghost&lt;/button&gt;
+&lt;button class="<span class="tok-class">btn btn-danger</span>"&gt;Danger&lt;/button&gt;
+&lt;button class="<span class="tok-class">btn btn-success</span>"&gt;Success&lt;/button&gt;
+&lt;a href="#" class="<span class="tok-class">btn btn-primary</span>"&gt;Link as button&lt;/a&gt;</pre>
+</div>
+
+<h3 class="doc-h3">Sizes</h3>
+<div class="doc-preview">
+  <div class="doc-preview-bar"><span class="doc-preview-dot"></span>Sizes</div>
+  <div class="doc-preview-body" style="align-items:flex-end">
+    <button class="p-btn p-btn-primary p-btn-xs">Extra small</button>
+    <button class="p-btn p-btn-primary p-btn-sm">Small</button>
+    <button class="p-btn p-btn-primary">Default</button>
+    <button class="p-btn p-btn-primary p-btn-lg">Large</button>
+    <button class="p-btn p-btn-primary p-btn-xl">X-Large</button>
+  </div>
+</div>
+
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre">&lt;button class="<span class="tok-class">btn btn-primary btn-xs</span>"&gt;X-Small&lt;/button&gt;
+&lt;button class="<span class="tok-class">btn btn-primary btn-sm</span>"&gt;Small&lt;/button&gt;
+&lt;button class="<span class="tok-class">btn btn-primary</span>"&gt;Default&lt;/button&gt;
+&lt;button class="<span class="tok-class">btn btn-primary btn-lg</span>"&gt;Large&lt;/button&gt;
+&lt;button class="<span class="tok-class">btn btn-primary btn-xl</span>"&gt;X-Large&lt;/button&gt;</pre>
+</div>
+
+<h3 class="doc-h3">Special states</h3>
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre"><span class="tok-comment">&lt;!-- Disabled --&gt;</span>
+&lt;button class="<span class="tok-class">btn btn-primary</span>" disabled&gt;Disabled&lt;/button&gt;
+
+<span class="tok-comment">&lt;!-- Loading (hides text, shows spinner) --&gt;</span>
+&lt;button class="<span class="tok-class">btn btn-primary btn-loading</span>" disabled&gt;Saving…&lt;/button&gt;
+
+<span class="tok-comment">&lt;!-- Full width --&gt;</span>
+&lt;button class="<span class="tok-class">btn btn-primary btn-wide</span>"&gt;Full width&lt;/button&gt;
+
+<span class="tok-comment">&lt;!-- Circle icon button --&gt;</span>
+&lt;button class="<span class="tok-class">btn btn-secondary btn-circle btn-lg</span>"&gt;+&lt;/button&gt;
+
+<span class="tok-comment">&lt;!-- Button group --&gt;</span>
+&lt;div class="<span class="tok-class">btn-group</span>"&gt;
+  &lt;button class="<span class="tok-class">btn btn-secondary</span>"&gt;Left&lt;/button&gt;
+  &lt;button class="<span class="tok-class">btn btn-secondary</span>"&gt;Center&lt;/button&gt;
+  &lt;button class="<span class="tok-class">btn btn-secondary</span>"&gt;Right&lt;/button&gt;
+&lt;/div&gt;</pre>
+</div>
+
+<table class="doc-table">
+  <thead><tr><th>Class</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td><code class="ic">.btn</code></td><td>Base class — required on all buttons</td></tr>
+    <tr><td><code class="ic">.btn-primary</code></td><td>Solid primary color</td></tr>
+    <tr><td><code class="ic">.btn-secondary</code></td><td>Subtle gray fill</td></tr>
+    <tr><td><code class="ic">.btn-outline</code></td><td>Bordered, transparent fill</td></tr>
+    <tr><td><code class="ic">.btn-ghost</code></td><td>No border, hover fill only</td></tr>
+    <tr><td><code class="ic">.btn-danger</code></td><td>Red destructive action</td></tr>
+    <tr><td><code class="ic">.btn-link</code></td><td>Looks like a text link</td></tr>
+    <tr><td><code class="ic">.btn-loading</code></td><td>Shows CSS spinner, hides label text</td></tr>
+    <tr><td><code class="ic">.btn-wide</code></td><td><code class="ic">width: 100%</code></td></tr>
+    <tr><td><code class="ic">.btn-circle</code></td><td>Round corners (combine with <code class="ic">.btn-square</code>)</td></tr>
+  </tbody>
+</table>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     FORMS
+     ═══════════════════════════════════════════════════════════════════ -->
+<span class="doc-section-anchor" id="forms"></span>
+<h2 class="doc-h2">Forms</h2>
+
+<h3 class="doc-h3">Input</h3>
+<div class="doc-preview">
+  <div class="doc-preview-bar"><span class="doc-preview-dot"></span>Preview</div>
+  <div class="doc-preview-body col">
+    <div style="width:100%;max-width:360px">
+      <label class="p-label">Email address</label>
+      <input class="p-input" type="email" placeholder="you@example.com">
+      <p class="p-hint">We'll never share your email.</p>
+    </div>
+    <div style="width:100%;max-width:360px">
+      <label class="p-label">Error state</label>
+      <input class="p-input p-input-error" type="text" value="invalid value">
+      <p class="p-error">This field is required.</p>
+    </div>
+  </div>
+</div>
+
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre">&lt;div class="<span class="tok-class">form-group</span>"&gt;
+  &lt;label class="<span class="tok-class">label label-required</span>" for="email"&gt;Email&lt;/label&gt;
+  &lt;input class="<span class="tok-class">input</span>" type="email" id="email" placeholder="you@example.com"&gt;
+  &lt;span class="<span class="tok-class">form-hint</span>"&gt;We'll never share your email.&lt;/span&gt;
+&lt;/div&gt;
+
+<span class="tok-comment">&lt;!-- Error state --&gt;</span>
+&lt;input class="<span class="tok-class">input input-error</span>" type="text"&gt;
+&lt;span class="<span class="tok-class">form-error-msg</span>"&gt;This field is required.&lt;/span&gt;
+
+<span class="tok-comment">&lt;!-- Sizes --&gt;</span>
+&lt;input class="<span class="tok-class">input input-sm</span>" type="text"&gt;
+&lt;input class="<span class="tok-class">input input-lg</span>" type="text"&gt;</pre>
+</div>
+
+<h3 class="doc-h3">Input group (prefix / suffix)</h3>
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre"><span class="tok-comment">&lt;!-- Prefix text --&gt;</span>
+&lt;div class="<span class="tok-class">input-group</span>"&gt;
+  &lt;span class="<span class="tok-class">input-group-prepend</span>"&gt;https://&lt;/span&gt;
+  &lt;input class="<span class="tok-class">input</span>" type="text" placeholder="your-domain.com"&gt;
+&lt;/div&gt;
+
+<span class="tok-comment">&lt;!-- Suffix button --&gt;</span>
+&lt;div class="<span class="tok-class">input-group</span>"&gt;
+  &lt;input class="<span class="tok-class">input</span>" type="search" placeholder="Search…"&gt;
+  &lt;button class="<span class="tok-class">btn btn-primary input-group-append</span>"&gt;Go&lt;/button&gt;
+&lt;/div&gt;</pre>
+</div>
+
+<h3 class="doc-h3">Select, Textarea, Checkbox &amp; Radio</h3>
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre">&lt;select class="<span class="tok-class">select</span>"&gt;
+  &lt;option&gt;Option 1&lt;/option&gt;
+&lt;/select&gt;
+
+&lt;textarea class="<span class="tok-class">textarea</span>" rows="4"&gt;&lt;/textarea&gt;
+
+<span class="tok-comment">&lt;!-- Checkbox --&gt;</span>
+&lt;label class="<span class="tok-class">checkbox</span>"&gt;
+  &lt;input type="checkbox" checked&gt;
+  &lt;span&gt;Accept terms&lt;/span&gt;
+&lt;/label&gt;
+
+<span class="tok-comment">&lt;!-- Toggle switch --&gt;</span>
+&lt;label class="<span class="tok-class">flex items-center gap-3</span>"&gt;
+  &lt;span class="<span class="tok-class">toggle</span>"&gt;
+    &lt;input type="checkbox" checked&gt;
+    &lt;span class="<span class="tok-class">toggle-slider</span>"&gt;&lt;/span&gt;
+  &lt;/span&gt;
+  Enable notifications
+&lt;/label&gt;</pre>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     CARDS
+     ═══════════════════════════════════════════════════════════════════ -->
+<span class="doc-section-anchor" id="cards"></span>
+<h2 class="doc-h2">Cards</h2>
+<div class="doc-preview">
+  <div class="doc-preview-bar"><span class="doc-preview-dot"></span>Preview</div>
+  <div class="doc-preview-body grid-2">
+    <div class="p-card">
+      <div class="p-card-header">Card title</div>
+      <div class="p-card-body" style="font-size:14px;color:var(--doc-text-muted)">Card content. Use <code style="font-family:monospace;font-size:12px;background:var(--doc-surface);border:1px solid var(--doc-border);border-radius:3px;padding:1px 5px">.card-body</code> for padded content areas.</div>
+      <div class="p-card-footer"><button class="p-btn p-btn-primary p-btn-sm">Action</button></div>
+    </div>
+    <div class="p-card">
+      <div style="height:80px;background:linear-gradient(135deg,#3b82f6,#8b5cf6)"></div>
+      <div class="p-card-body">
+        <div style="font-size:16px;font-weight:600;color:var(--doc-text);margin-bottom:4px">Image card</div>
+        <div style="font-size:13px;color:var(--doc-text-muted)">Add <code style="font-family:monospace;font-size:11px;background:var(--doc-surface);border:1px solid var(--doc-border);border-radius:3px;padding:1px 4px">.card-hover</code> for lift-on-hover.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre">&lt;div class="<span class="tok-class">card card-hover</span>"&gt;
+  &lt;img class="<span class="tok-class">card-image</span>" src="photo.jpg" alt=""&gt;
+  &lt;div class="<span class="tok-class">card-body</span>"&gt;
+    &lt;h2 class="<span class="tok-class">card-title</span>"&gt;Card title&lt;/h2&gt;
+    &lt;p class="<span class="tok-class">card-subtitle</span>"&gt;Supporting text&lt;/p&gt;
+    &lt;p class="<span class="tok-class">mt-3 text-sm text-muted</span>"&gt;Card body content.&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="<span class="tok-class">card-footer</span>"&gt;
+    &lt;button class="<span class="tok-class">btn btn-primary btn-sm</span>"&gt;Action&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+</div>
+
+<table class="doc-table">
+  <thead><tr><th>Modifier</th><th>Effect</th></tr></thead>
+  <tbody>
+    <tr><td><code class="ic">.card-hover</code></td><td>Shadow + lift on hover</td></tr>
+    <tr><td><code class="ic">.card-elevated</code></td><td>Shadow instead of border</td></tr>
+    <tr><td><code class="ic">.card-outlined</code></td><td>Transparent background</td></tr>
+    <tr><td><code class="ic">.card-flat</code></td><td>No border, no shadow, transparent</td></tr>
+    <tr><td><code class="ic">.card-sm</code></td><td>Reduced body padding</td></tr>
+  </tbody>
+</table>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     BADGES & CHIPS
+     ═══════════════════════════════════════════════════════════════════ -->
+<span class="doc-section-anchor" id="badges"></span>
+<h2 class="doc-h2">Badges &amp; Chips</h2>
+
+<div class="doc-preview">
+  <div class="doc-preview-bar"><span class="doc-preview-dot"></span>Badges</div>
+  <div class="doc-preview-body">
+    <span class="p-badge">Default</span>
+    <span class="p-badge p-badge-blue">Info</span>
+    <span class="p-badge p-badge-green">Success</span>
+    <span class="p-badge p-badge-amber">Warning</span>
+    <span class="p-badge p-badge-red">Danger</span>
+    <span class="p-badge p-badge-purple p-badge-pill">Purple pill</span>
+  </div>
+</div>
+
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre">&lt;span class="<span class="tok-class">badge</span>"&gt;Default&lt;/span&gt;
+&lt;span class="<span class="tok-class">badge badge-primary</span>"&gt;Primary&lt;/span&gt;
+&lt;span class="<span class="tok-class">badge badge-pill badge-success</span>"&gt;Success pill&lt;/span&gt;
+&lt;span class="<span class="tok-class">badge badge-danger badge-lg</span>"&gt;Large danger&lt;/span&gt;
+
+<span class="tok-comment">&lt;!-- Dot badge (status indicator) --&gt;</span>
+&lt;span class="<span class="tok-class">badge-dot text-success</span>"&gt;Online&lt;/span&gt;
+
+<span class="tok-comment">&lt;!-- Dismissible chip --&gt;</span>
+&lt;span class="<span class="tok-class">chip</span>"&gt;
+  TypeScript
+  &lt;button class="<span class="tok-class">chip-remove</span>" aria-label="remove"&gt;×&lt;/button&gt;
+&lt;/span&gt;</pre>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     ALERTS & CALLOUTS
+     ═══════════════════════════════════════════════════════════════════ -->
+<span class="doc-section-anchor" id="alerts"></span>
+<h2 class="doc-h2">Alerts &amp; Callouts</h2>
+
+<div class="doc-preview">
+  <div class="doc-preview-bar"><span class="doc-preview-dot"></span>Preview</div>
+  <div class="doc-preview-body col" style="gap:10px">
+    <div class="p-alert p-alert-info"><div><p style="font-weight:600;margin-bottom:2px">Information</p><p style="font-size:13px">Your session will expire in 30 minutes.</p></div></div>
+    <div class="p-alert p-alert-success"><div><p style="font-weight:600;margin-bottom:2px">Success</p><p style="font-size:13px">Changes saved successfully.</p></div></div>
+    <div class="p-alert p-alert-warning"><div><p style="font-weight:600;margin-bottom:2px">Warning</p><p style="font-size:13px">Your plan is almost at its limit.</p></div></div>
+    <div class="p-alert p-alert-danger"><div><p style="font-weight:600;margin-bottom:2px">Error</p><p style="font-size:13px">Could not process payment.</p></div></div>
+  </div>
+</div>
+
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre">&lt;div class="<span class="tok-class">alert alert-info</span>"&gt;
+  &lt;div class="<span class="tok-class">alert-content</span>"&gt;
+    &lt;p class="<span class="tok-class">alert-title</span>"&gt;Information&lt;/p&gt;
+    &lt;p&gt;Your session will expire in 30 minutes.&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+<span class="tok-comment">&lt;!-- With icon slot --&gt;</span>
+&lt;div class="<span class="tok-class">alert alert-warning</span>"&gt;
+  &lt;span class="<span class="tok-class">alert-icon</span>"&gt;⚠️&lt;/span&gt;
+  &lt;div class="<span class="tok-class">alert-content</span>"&gt;
+    &lt;p class="<span class="tok-class">alert-title</span>"&gt;Heads up&lt;/p&gt;
+    &lt;p&gt;Your plan is almost at its limit.&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+<span class="tok-comment">&lt;!-- Callout (border-left accent) --&gt;</span>
+&lt;div class="<span class="tok-class">callout callout-info</span>"&gt;
+  &lt;p class="<span class="tok-class">callout-title</span>"&gt;💡 Pro Tip&lt;/p&gt;
+  &lt;p&gt;Use CSS custom properties to theme any component…&lt;/p&gt;
+&lt;/div&gt;</pre>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     NAVIGATION
+     ═══════════════════════════════════════════════════════════════════ -->
+<span class="doc-section-anchor" id="nav-components"></span>
+<h2 class="doc-h2">Navigation — Navbar</h2>
+
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre">&lt;nav class="<span class="tok-class">navbar navbar-sticky</span>"&gt;
+  &lt;a class="<span class="tok-class">navbar-brand</span>" href="/"&gt;Brand&lt;/a&gt;
+
+  &lt;ul class="<span class="tok-class">navbar-nav</span>"&gt;
+    &lt;li&gt;&lt;a href="/" class="<span class="tok-class">active</span>"&gt;Home&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="/docs"&gt;Docs&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;div class="<span class="tok-class">navbar-spacer</span>"&gt;&lt;/div&gt;
+
+  &lt;button class="<span class="tok-class">btn btn-primary btn-sm</span>"&gt;Sign up&lt;/button&gt;
+&lt;/nav&gt;</pre>
+</div>
+
+<table class="doc-table">
+  <thead><tr><th>Modifier</th><th>Effect</th></tr></thead>
+  <tbody>
+    <tr><td><code class="ic">.navbar-sticky</code></td><td><code class="ic">position: sticky; top: 0</code></td></tr>
+    <tr><td><code class="ic">.navbar-glass</code></td><td>Frosted glass effect with <code class="ic">backdrop-filter: blur(12px)</code></td></tr>
+    <tr><td><code class="ic">.navbar-spacer</code></td><td>Pushes following items to the right</td></tr>
+  </tbody>
+</table>
+
+<h3 class="doc-h3">Sidebar navigation</h3>
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre">&lt;nav class="<span class="tok-class">sidenav</span>"&gt;
+  &lt;p class="<span class="tok-class">sidenav-title</span>"&gt;Getting Started&lt;/p&gt;
+  &lt;a href="/intro" class="<span class="tok-class">active</span>"&gt;Introduction&lt;/a&gt;
+  &lt;a href="/install"&gt;Installation&lt;/a&gt;
+  &lt;p class="<span class="tok-class">sidenav-title</span>"&gt;Components&lt;/p&gt;
+  &lt;a href="/buttons"&gt;Buttons&lt;/a&gt;
+&lt;/nav&gt;</pre>
+</div>
+
+<h3 class="doc-h3">Breadcrumb</h3>
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre">&lt;ol class="<span class="tok-class">breadcrumb</span>"&gt;
+  &lt;li&gt;&lt;a href="/"&gt;Home&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="/components"&gt;Components&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Breadcrumb&lt;/li&gt;   <span class="tok-comment">&lt;!-- current page: no link --&gt;</span>
+&lt;/ol&gt;</pre>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     TABS
+     ═══════════════════════════════════════════════════════════════════ -->
+<span class="doc-section-anchor" id="tabs"></span>
+<h2 class="doc-h2">Tabs</h2>
+<div class="doc-preview">
+  <div class="doc-preview-bar"><span class="doc-preview-dot"></span>Preview</div>
+  <div class="doc-preview-body col" style="gap:20px;padding-bottom:20px">
+    <div>
+      <p style="font-size:11px;color:var(--doc-text-muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em;font-weight:600">Underline tabs</p>
+      <div class="p-tab-bar">
+        <button class="p-tab active">Overview</button>
+        <button class="p-tab">Activity</button>
+        <button class="p-tab">Settings</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre"><span class="tok-comment">&lt;!-- Underline tabs (default) --&gt;</span>
+&lt;nav class="<span class="tok-class">tabs</span>"&gt;
+  &lt;button class="<span class="tok-class">tab active</span>"&gt;Overview&lt;/button&gt;
+  &lt;button class="<span class="tok-class">tab</span>"&gt;Activity&lt;/button&gt;
+  &lt;button class="<span class="tok-class">tab</span>"&gt;Settings&lt;/button&gt;
+&lt;/nav&gt;
+
+<span class="tok-comment">&lt;!-- Pill tabs --&gt;</span>
+&lt;nav class="<span class="tok-class">tabs tabs-pills</span>"&gt;
+  &lt;button class="<span class="tok-class">tab active</span>"&gt;All&lt;/button&gt;
+  &lt;button class="<span class="tok-class">tab</span>"&gt;Active&lt;/button&gt;
+  &lt;button class="<span class="tok-class">tab</span>"&gt;Archived&lt;/button&gt;
+&lt;/nav&gt;</pre>
+</div>
+
+<div class="doc-note doc-note-info">
+  <span class="doc-note-icon">💡</span>
+  <div class="doc-note-body">Tabs use CSS classes only — activate tabs by toggling the <code class="ic">.active</code> class with JavaScript. The framework provides no opinion on tab panel visibility logic.</div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     TABLES
+     ═══════════════════════════════════════════════════════════════════ -->
+<span class="doc-section-anchor" id="tables"></span>
+<h2 class="doc-h2">Tables</h2>
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre"><span class="tok-comment">&lt;!-- Always wrap in table-wrap for horizontal scroll --&gt;</span>
+&lt;div class="<span class="tok-class">table-wrap</span>"&gt;
+  &lt;table class="<span class="tok-class">table table-striped table-hover table-rounded</span>"&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th&gt;Name&lt;/th&gt;
+        &lt;th&gt;Status&lt;/th&gt;
+        &lt;th&gt;Date&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Alice&lt;/td&gt;
+        &lt;td&gt;&lt;span class="<span class="tok-class">badge badge-pill badge-success</span>"&gt;Active&lt;/span&gt;&lt;/td&gt;
+        &lt;td class="<span class="tok-class">text-muted</span>"&gt;Apr 15, 2026&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+&lt;/div&gt;</pre>
+</div>
+
+<table class="doc-table">
+  <thead><tr><th>Modifier</th><th>Effect</th></tr></thead>
+  <tbody>
+    <tr><td><code class="ic">.table-striped</code></td><td>Alternating row background</td></tr>
+    <tr><td><code class="ic">.table-hover</code></td><td>Row highlight on hover</td></tr>
+    <tr><td><code class="ic">.table-bordered</code></td><td>All cell borders</td></tr>
+    <tr><td><code class="ic">.table-compact</code></td><td>Reduced cell padding</td></tr>
+    <tr><td><code class="ic">.table-rounded</code></td><td>Rounded outer corners</td></tr>
+  </tbody>
+</table>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     PROGRESS & SPINNERS
+     ═══════════════════════════════════════════════════════════════════ -->
+<span class="doc-section-anchor" id="progress"></span>
+<h2 class="doc-h2">Progress &amp; Spinners</h2>
+
+<div class="doc-preview">
+  <div class="doc-preview-bar"><span class="doc-preview-dot"></span>Progress bars</div>
+  <div class="doc-preview-body col" style="gap:14px">
+    <div><div style="font-size:12px;color:var(--doc-text-muted);margin-bottom:6px">Default — 72%</div><div class="p-progress"><div class="p-progress-bar" style="width:72%"></div></div></div>
+    <div><div style="font-size:12px;color:var(--doc-text-muted);margin-bottom:6px">Success — 45%</div><div class="p-progress"><div class="p-progress-bar" style="width:45%;background:#16a34a"></div></div></div>
+    <div><div style="font-size:12px;color:var(--doc-text-muted);margin-bottom:6px">Danger — 90%</div><div class="p-progress"><div class="p-progress-bar" style="width:90%;background:#dc2626"></div></div></div>
+  </div>
+</div>
+
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre"><span class="tok-comment">&lt;!-- Basic --&gt;</span>
+&lt;div class="<span class="tok-class">progress</span>"&gt;
+  &lt;div class="<span class="tok-class">progress-bar</span>" style="width: 65%"&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+<span class="tok-comment">&lt;!-- Colored --&gt;</span>
+&lt;div class="<span class="tok-class">progress</span>"&gt;
+  &lt;div class="<span class="tok-class">progress-bar progress-bar-success</span>" style="width: 45%"&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+<span class="tok-comment">&lt;!-- Animated stripes --&gt;</span>
+&lt;div class="<span class="tok-class">progress progress-lg</span>"&gt;
+  &lt;div class="<span class="tok-class">progress-bar progress-bar-striped progress-bar-animated</span>" style="width: 60%"&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+<span class="tok-comment">&lt;!-- Sizes: .progress-xs .progress-sm .progress-lg .progress-xl --&gt;</span></pre>
+</div>
+
+<div class="doc-preview">
+  <div class="doc-preview-bar"><span class="doc-preview-dot"></span>Spinners</div>
+  <div class="doc-preview-body" style="align-items:center">
+    <span class="p-spinner" style="width:16px;height:16px;border-width:2px"></span>
+    <span class="p-spinner"></span>
+    <span class="p-spinner" style="width:40px;height:40px;border-width:3px"></span>
+    <span class="p-spinner" style="width:24px;height:24px;border-top-color:#16a34a"></span>
+    <span class="p-spinner" style="width:24px;height:24px;border-top-color:#dc2626"></span>
+  </div>
+</div>
+
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre">&lt;span class="<span class="tok-class">spinner</span>"&gt;&lt;/span&gt;
+&lt;span class="<span class="tok-class">spinner spinner-sm</span>"&gt;&lt;/span&gt;
+&lt;span class="<span class="tok-class">spinner spinner-lg</span>"&gt;&lt;/span&gt;
+&lt;span class="<span class="tok-class">spinner spinner-success</span>"&gt;&lt;/span&gt;</pre>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     AVATARS
+     ═══════════════════════════════════════════════════════════════════ -->
+<span class="doc-section-anchor" id="avatars"></span>
+<h2 class="doc-h2">Avatars</h2>
+<div class="doc-preview">
+  <div class="doc-preview-bar"><span class="doc-preview-dot"></span>Preview</div>
+  <div class="doc-preview-body" style="align-items:flex-end">
+    <span class="p-avatar" style="width:24px;height:24px;font-size:10px;background:#eff6ff;color:#1d4ed8">XS</span>
+    <span class="p-avatar" style="width:32px;height:32px;font-size:12px;background:#f0fdf4;color:#15803d">SM</span>
+    <span class="p-avatar" style="background:#eff6ff;color:#1d4ed8">MD</span>
+    <span class="p-avatar" style="width:56px;height:56px;font-size:18px;background:#faf5ff;color:#7e22ce">LG</span>
+    <span class="p-avatar" style="width:80px;height:80px;font-size:24px;background:#fef2f2;color:#b91c1c">XL</span>
+    <div style="display:flex;margin-left:12px">
+      <span class="p-avatar" style="width:32px;height:32px;font-size:12px;background:#eff6ff;color:#1d4ed8;box-shadow:0 0 0 2px var(--doc-bg);margin-left:-8px;border:none">A</span>
+      <span class="p-avatar" style="width:32px;height:32px;font-size:12px;background:#f0fdf4;color:#15803d;box-shadow:0 0 0 2px var(--doc-bg);margin-left:-8px;border:none">B</span>
+      <span class="p-avatar" style="width:32px;height:32px;font-size:12px;background:#faf5ff;color:#7e22ce;box-shadow:0 0 0 2px var(--doc-bg);margin-left:-8px;border:none">C</span>
+    </div>
+  </div>
+</div>
+
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre"><span class="tok-comment">&lt;!-- Text initials --&gt;</span>
+&lt;span class="<span class="tok-class">avatar</span>"&gt;JD&lt;/span&gt;
+
+<span class="tok-comment">&lt;!-- Photo --&gt;</span>
+&lt;span class="<span class="tok-class">avatar avatar-lg</span>"&gt;
+  &lt;img src="photo.jpg" alt="Jane Doe"&gt;
+&lt;/span&gt;
+
+<span class="tok-comment">&lt;!-- Group (overlapping) --&gt;</span>
+&lt;div class="<span class="tok-class">avatar-group</span>"&gt;
+  &lt;span class="<span class="tok-class">avatar avatar-sm</span>"&gt;A&lt;/span&gt;
+  &lt;span class="<span class="tok-class">avatar avatar-sm</span>"&gt;B&lt;/span&gt;
+  &lt;span class="<span class="tok-class">avatar avatar-sm</span>"&gt;+4&lt;/span&gt;
+&lt;/div&gt;
+
+<span class="tok-comment">&lt;!-- Sizes: .avatar-xs .avatar-sm .avatar .avatar-lg .avatar-xl --&gt;</span></pre>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     TOOLTIPS
+     ═══════════════════════════════════════════════════════════════════ -->
+<span class="doc-section-anchor" id="tooltips"></span>
+<h2 class="doc-h2">Tooltips</h2>
+<p class="doc-p">Pure CSS tooltips using the <code class="ic">data-tooltip</code> attribute. No JavaScript required.</p>
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre"><span class="tok-comment">&lt;!-- Top (default) --&gt;</span>
+&lt;button data-tooltip="<span class="tok-string">Appears above</span>"&gt;Hover me&lt;/button&gt;
+
+<span class="tok-comment">&lt;!-- Positions: top (default), bottom, left, right --&gt;</span>
+&lt;button data-tooltip="<span class="tok-string">Below!</span>" data-tooltip-pos="<span class="tok-string">bottom</span>"&gt;Bottom&lt;/button&gt;
+&lt;button data-tooltip="<span class="tok-string">To the right</span>" data-tooltip-pos="<span class="tok-string">right</span>"&gt;Right&lt;/button&gt;</pre>
+</div>
+
+<div class="doc-note doc-note-warning">
+  <span class="doc-note-icon">⚠️</span>
+  <div class="doc-note-body"><strong>Accessibility note:</strong> CSS tooltips only show on hover. For keyboard users, add a visible label or use <code class="ic">aria-describedby</code> with a visually hidden element alongside the CSS tooltip.</div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     SKELETONS
+     ═══════════════════════════════════════════════════════════════════ -->
+<span class="doc-section-anchor" id="skeletons"></span>
+<h2 class="doc-h2">Skeleton Loaders</h2>
+<div class="doc-preview">
+  <div class="doc-preview-bar"><span class="doc-preview-dot"></span>Preview</div>
+  <div class="doc-preview-body grid-2">
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div class="p-skeleton" style="width:40%;height:1.4em"></div>
+      <div class="p-skeleton" style="width:100%;height:0.9em"></div>
+      <div class="p-skeleton" style="width:100%;height:0.9em"></div>
+      <div class="p-skeleton" style="width:75%;height:0.9em"></div>
+      <div class="p-skeleton" style="width:80px;height:2rem;margin-top:4px;border-radius:8px"></div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <div class="p-skeleton" style="width:48px;height:48px;border-radius:50%;flex-shrink:0"></div>
+      <div style="flex:1;display:flex;flex-direction:column;gap:6px">
+        <div class="p-skeleton" style="width:55%;height:0.9em"></div>
+        <div class="p-skeleton" style="width:80%;height:0.75em"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre"><span class="tok-comment">&lt;!-- Block of text skeleton --&gt;</span>
+&lt;div class="<span class="tok-class">skeleton skeleton-title</span>"&gt;&lt;/div&gt;
+&lt;div class="<span class="tok-class">skeleton skeleton-text</span>"&gt;&lt;/div&gt;
+&lt;div class="<span class="tok-class">skeleton skeleton-text</span>"&gt;&lt;/div&gt;
+&lt;div class="<span class="tok-class">skeleton skeleton-text</span>"&gt;&lt;/div&gt;
+
+<span class="tok-comment">&lt;!-- Avatar + text skeleton --&gt;</span>
+&lt;div class="<span class="tok-class">flex items-center gap-3</span>"&gt;
+  &lt;div class="<span class="tok-class">skeleton skeleton-circle</span>" style="width:48px;height:48px"&gt;&lt;/div&gt;
+  &lt;div class="<span class="tok-class">flex-1</span>"&gt;
+    &lt;div class="<span class="tok-class">skeleton skeleton-text</span>" style="width:60%"&gt;&lt;/div&gt;
+    &lt;div class="<span class="tok-class">skeleton skeleton-text</span>"&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+<span class="tok-comment">&lt;!-- Button skeleton --&gt;</span>
+&lt;div class="<span class="tok-class">skeleton skeleton-btn</span>"&gt;&lt;/div&gt;</pre>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     MODALS
+     ═══════════════════════════════════════════════════════════════════ -->
+<span class="doc-section-anchor" id="modals"></span>
+<h2 class="doc-h2">Modals</h2>
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre"><span class="tok-comment">&lt;!-- Trigger --&gt;</span>
+&lt;button class="<span class="tok-class">btn btn-primary</span>" onclick="document.getElementById('my-modal').style.display='flex'"&gt;
+  Open Modal
+&lt;/button&gt;
+
+<span class="tok-comment">&lt;!-- Modal markup --&gt;</span>
+&lt;div class="<span class="tok-class">modal-overlay</span>" id="my-modal" style="display:none"
+     onclick="if(event.target===this)this.style.display='none'"&gt;
+  &lt;div class="<span class="tok-class">modal</span>" role="dialog" aria-modal="true" aria-labelledby="modal-title"&gt;
+    &lt;div class="<span class="tok-class">modal-header</span>"&gt;
+      &lt;h2 class="<span class="tok-class">modal-title</span>" id="modal-title"&gt;Confirm Action&lt;/h2&gt;
+      &lt;button class="<span class="tok-class">modal-close</span>" onclick="document.getElementById('my-modal').style.display='none'"&gt;×&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class="<span class="tok-class">modal-body</span>"&gt;
+      &lt;p&gt;Are you sure you want to proceed?&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class="<span class="tok-class">modal-footer</span>"&gt;
+      &lt;button class="<span class="tok-class">btn btn-secondary</span>"&gt;Cancel&lt;/button&gt;
+      &lt;button class="<span class="tok-class">btn btn-danger</span>"&gt;Delete&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+</div>
+
+<table class="doc-table">
+  <thead><tr><th>Modifier</th><th>Max-width</th></tr></thead>
+  <tbody>
+    <tr><td><code class="ic">.modal-sm</code></td><td>360px</td></tr>
+    <tr><td><code class="ic">.modal</code> (default)</td><td>540px</td></tr>
+    <tr><td><code class="ic">.modal-lg</code></td><td>720px</td></tr>
+    <tr><td><code class="ic">.modal-xl</code></td><td>960px</td></tr>
+    <tr><td><code class="ic">.modal-full</code></td><td>100vw / 100vh</td></tr>
+  </tbody>
+</table>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     DROPDOWNS
+     ═══════════════════════════════════════════════════════════════════ -->
+<span class="doc-section-anchor" id="dropdowns"></span>
+<h2 class="doc-h2">Dropdowns</h2>
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre">&lt;div class="<span class="tok-class">dropdown</span>"&gt;
+  &lt;button class="<span class="tok-class">btn btn-secondary</span>" onclick="this.nextElementSibling.toggleAttribute('hidden')"&gt;
+    Options ▾
+  &lt;/button&gt;
+  &lt;div class="<span class="tok-class">dropdown-menu</span>" hidden&gt;
+    &lt;p class="<span class="tok-class">dropdown-header</span>"&gt;Account&lt;/p&gt;
+    &lt;a class="<span class="tok-class">dropdown-item</span>" href="/profile"&gt;Profile&lt;/a&gt;
+    &lt;a class="<span class="tok-class">dropdown-item</span>" href="/settings"&gt;Settings&lt;/a&gt;
+    &lt;div class="<span class="tok-class">dropdown-divider</span>"&gt;&lt;/div&gt;
+    &lt;button class="<span class="tok-class">dropdown-item dropdown-item-danger</span>"&gt;Sign out&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+<span class="tok-comment">&lt;!-- Align to right edge --&gt;</span>
+&lt;div class="<span class="tok-class">dropdown-menu dropdown-menu-end</span>" hidden&gt;…&lt;/div&gt;</pre>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     ACCORDION
+     ═══════════════════════════════════════════════════════════════════ -->
+<span class="doc-section-anchor" id="accordion"></span>
+<h2 class="doc-h2">Accordion</h2>
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre">&lt;div class="<span class="tok-class">accordion</span>"&gt;
+  &lt;div class="<span class="tok-class">accordion-item</span>"&gt;
+    &lt;button class="<span class="tok-class">accordion-trigger</span>" aria-expanded="false"
+            onclick="toggleAccordion(this)"&gt;
+      What is nydcss?
+      &lt;svg class="<span class="tok-class">accordion-chevron</span>" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"&gt;
+        &lt;path d="M6 9l6 6 6-6"/&gt;
+      &lt;/svg&gt;
+    &lt;/button&gt;
+    &lt;div class="<span class="tok-class">accordion-content</span>" hidden&gt;
+      nydcss is a modern CSS framework…
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+<span class="tok-comment">&lt;!-- Minimal JS to wire it up --&gt;</span>
+&lt;script&gt;
+function toggleAccordion(btn) {
+  const open = btn.getAttribute('aria-expanded') === 'true';
+  btn.setAttribute('aria-expanded', !open);
+  btn.nextElementSibling.toggleAttribute('hidden', open);
+}
+&lt;/script&gt;</pre>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     TOASTS
+     ═══════════════════════════════════════════════════════════════════ -->
+<span class="doc-section-anchor" id="toasts"></span>
+<h2 class="doc-h2">Toasts</h2>
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre"><span class="tok-comment">&lt;!-- Toast container (fixed, bottom-right) --&gt;</span>
+&lt;div class="<span class="tok-class">toast-region</span>" id="toasts" aria-live="polite"&gt;&lt;/div&gt;
+
+<span class="tok-comment">&lt;!-- Trigger with JS --&gt;</span>
+&lt;script&gt;
+function showToast(title, message, type = '') {
+  const toast = document.createElement('div');
+  toast.className = `toast toast-${type}`;
+  toast.innerHTML = `
+    &lt;div class="toast-body"&gt;
+      &lt;p class="toast-title"&gt;${title}&lt;/p&gt;
+      &lt;p&gt;${message}&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;button onclick="this.closest('.toast').remove()"&gt;×&lt;/button&gt;
+  `;
+  document.getElementById('toasts').appendChild(toast);
+  setTimeout(() =&gt; toast.remove(), 5000);
+}
+
+showToast('Success!', 'Changes saved.', 'success');
+showToast('Warning', 'Low storage.', 'warning');
+showToast('Error', 'Request failed.', 'danger');
+&lt;/script&gt;</pre>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     STATS
+     ═══════════════════════════════════════════════════════════════════ -->
+<span class="doc-section-anchor" id="stats"></span>
+<h2 class="doc-h2">Stats / KPIs</h2>
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre">&lt;div class="<span class="tok-class">auto-grid-sm gap-4</span>"&gt;
+
+  &lt;div class="<span class="tok-class">card card-body</span>"&gt;
+    &lt;div class="<span class="tok-class">stat</span>"&gt;
+      &lt;span class="<span class="tok-class">stat-label</span>"&gt;Total Revenue&lt;/span&gt;
+      &lt;span class="<span class="tok-class">stat-value</span>"&gt;$48,295&lt;/span&gt;
+      &lt;span class="<span class="tok-class">stat-change-up</span>"&gt;↑ 12.5% vs last month&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class="<span class="tok-class">card card-body</span>"&gt;
+    &lt;div class="<span class="tok-class">stat</span>"&gt;
+      &lt;span class="<span class="tok-class">stat-label</span>"&gt;Churn Rate&lt;/span&gt;
+      &lt;span class="<span class="tok-class">stat-value</span>"&gt;2.4%&lt;/span&gt;
+      &lt;span class="<span class="tok-class">stat-change-down</span>"&gt;↑ 0.3%&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+&lt;/div&gt;</pre>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     ANIMATIONS
+     ═══════════════════════════════════════════════════════════════════ -->
+<span class="doc-section-anchor" id="animations"></span>
+<h2 class="doc-h2">Animations</h2>
+<p class="doc-p">nydcss ships 15 named keyframe animations as utility classes. All animations respect <code class="ic">prefers-reduced-motion</code>.</p>
+
+<table class="doc-table">
+  <thead><tr><th>Class</th><th>Description</th><th>Best for</th></tr></thead>
+  <tbody>
+    <tr><td><code class="ic">.animate-spin</code></td><td>Continuous rotation</td><td>Loading spinners</td></tr>
+    <tr><td><code class="ic">.animate-pulse</code></td><td>Fade in/out loop</td><td>Skeleton loaders, status dots</td></tr>
+    <tr><td><code class="ic">.animate-bounce</code></td><td>Vertical bounce loop</td><td>Scroll indicators</td></tr>
+    <tr><td><code class="ic">.animate-ping</code></td><td>Expand + fade out</td><td>Notification dots, radar</td></tr>
+    <tr><td><code class="ic">.animate-float</code></td><td>Gentle vertical float</td><td>Decorative elements</td></tr>
+    <tr><td><code class="ic">.animate-heartbeat</code></td><td>Scale pulse pattern</td><td>Like buttons, health icons</td></tr>
+    <tr><td><code class="ic">.animate-shimmer</code></td><td>Gradient sweep</td><td>Skeleton loaders</td></tr>
+    <tr><td><code class="ic">.animate-fadein</code></td><td>Fade in (one-shot)</td><td>Page entry, modals</td></tr>
+    <tr><td><code class="ic">.animate-slideup</code></td><td>Slide up + fade in</td><td>Modals, panels, toasts</td></tr>
+    <tr><td><code class="ic">.animate-scalein</code></td><td>Scale from 90%</td><td>Popovers, dropdowns</td></tr>
+    <tr><td><code class="ic">.animate-shake</code></td><td>Horizontal shake</td><td>Form errors, denied actions</td></tr>
+    <tr><td><code class="ic">.animate-wiggle</code></td><td>Rotate wiggle</td><td>Icon micro-interaction</td></tr>
+    <tr><td><code class="ic">.animate-blink</code></td><td>Step on/off</td><td>Cursors, indicators</td></tr>
+  </tbody>
+</table>
+
+<h3 class="doc-h3">Modifiers</h3>
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre"><span class="tok-comment">&lt;!-- Duration --&gt;</span>
+&lt;div class="<span class="tok-class">animate-spin animate-slow</span>"&gt;&lt;/div&gt;    <span class="tok-comment">&lt;!-- 1.5s --&gt;</span>
+&lt;div class="<span class="tok-class">animate-spin animate-fast</span>"&gt;&lt;/div&gt;    <span class="tok-comment">&lt;!-- 0.5s --&gt;</span>
+&lt;div class="<span class="tok-class">animate-spin animate-faster</span>"&gt;&lt;/div&gt;  <span class="tok-comment">&lt;!-- 0.3s --&gt;</span>
+
+<span class="tok-comment">&lt;!-- Delay --&gt;</span>
+&lt;div class="<span class="tok-class">animate-fadein animate-delay-300</span>"&gt;&lt;/div&gt;
+
+<span class="tok-comment">&lt;!-- Stagger children (JS) --&gt;</span>
+&lt;script&gt;
+document.querySelectorAll('.card').forEach((el, i) =&gt; {
+  el.style.animationDelay = `${i * 80}ms`;
+  el.classList.add('animate-fadein');
+});
+&lt;/script&gt;</pre>
+</div>
+
+<h3 class="doc-h3">Transitions</h3>
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre"><span class="tok-comment">&lt;!-- Sensible default (colors + shadow + opacity) --&gt;</span>
+&lt;div class="<span class="tok-class">transition</span>"&gt;…&lt;/div&gt;
+
+<span class="tok-comment">&lt;!-- Transform only --&gt;</span>
+&lt;div class="<span class="tok-class">transition-transform hover-up</span>"&gt;Lifts on hover&lt;/div&gt;
+
+<span class="tok-comment">&lt;!-- Scale on hover --&gt;</span>
+&lt;div class="<span class="tok-class">hover-scale</span>"&gt;Scales on hover&lt;/div&gt;</pre>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     RESPONSIVE
+     ═══════════════════════════════════════════════════════════════════ -->
+<span class="doc-section-anchor" id="responsive"></span>
+<h2 class="doc-h2">Responsive Utilities</h2>
+
+<h3 class="doc-h3">Breakpoints</h3>
+<table class="doc-table">
+  <thead><tr><th>Prefix</th><th>Min-width</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr><td><code class="ic">sm:</code></td><td>640px</td><td><code class="ic">.sm:flex-row</code></td></tr>
+    <tr><td><code class="ic">md:</code></td><td>768px</td><td><code class="ic">.md:grid-cols-2</code></td></tr>
+    <tr><td><code class="ic">lg:</code></td><td>1024px</td><td><code class="ic">.lg:grid-cols-4</code></td></tr>
+    <tr><td><code class="ic">xl:</code></td><td>1280px</td><td><code class="ic">.xl:grid-cols-5</code></td></tr>
+  </tbody>
+</table>
+
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre"><span class="tok-comment">&lt;!-- Stack on mobile, side-by-side on tablet, 4 cols on desktop --&gt;</span>
+&lt;div class="<span class="tok-class">grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6</span>"&gt;
+  …
+&lt;/div&gt;
+
+<span class="tok-comment">&lt;!-- Show/hide --&gt;</span>
+&lt;nav class="<span class="tok-class">hidden md:block</span>"&gt;Desktop nav&lt;/nav&gt;
+&lt;nav class="<span class="tok-class">md:hidden</span>"&gt;Mobile nav&lt;/nav&gt;
+
+<span class="tok-comment">&lt;!-- Responsive text --&gt;</span>
+&lt;p class="<span class="tok-class">text-center md:text-left</span>"&gt;Left-aligned above md&lt;/p&gt;</pre>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     PROSE
+     ═══════════════════════════════════════════════════════════════════ -->
+<span class="doc-section-anchor" id="prose"></span>
+<h2 class="doc-h2">Prose</h2>
+<p class="doc-p">Wrap Markdown output, blog posts, or documentation in <code class="ic">.nyd-prose</code> for automatic typographic styling with no extra classes needed on child elements.</p>
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre">&lt;article class="<span class="tok-class">nyd-prose container-prose mx-auto py-12</span>"&gt;
+  <span class="tok-comment">&lt;!-- All elements below are styled automatically --&gt;</span>
+  &lt;h1&gt;Article title&lt;/h1&gt;
+  &lt;p&gt;Lead paragraph…&lt;/p&gt;
+  &lt;h2&gt;Section&lt;/h2&gt;
+  &lt;ul&gt;&lt;li&gt;Item&lt;/li&gt;&lt;/ul&gt;
+  &lt;blockquote&gt;Quote&lt;/blockquote&gt;
+  &lt;table&gt;…&lt;/table&gt;
+  &lt;pre&gt;&lt;code&gt;code block&lt;/code&gt;&lt;/pre&gt;
+&lt;/article&gt;</pre>
+</div>
+
+<p class="doc-p">Prose styles headings, paragraphs, lists, blockquotes, tables, code blocks, links, <code class="ic">&lt;kbd&gt;</code>, and <code class="ic">&lt;mark&gt;</code>.</p>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     CUSTOMIZATION
+     ═══════════════════════════════════════════════════════════════════ -->
+<span class="doc-section-anchor" id="customization"></span>
+<h2 class="doc-h2">Customization &amp; Theming</h2>
+
+<h3 class="doc-h3">Minimal rebrand</h3>
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">css</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre"><span class="tok-at">@import</span> <span class="tok-string">"nydcss/dist/nyd.css"</span>;
+
+<span class="tok-selector">:root</span> {
+  <span class="tok-comment">/* Brand color — everything updates automatically */</span>
+  <span class="tok-prop">--nyd-color-primary</span>:        <span class="tok-value">#6d28d9</span>;
+  <span class="tok-prop">--nyd-color-primary-hover</span>:  <span class="tok-value">#5b21b6</span>;
+  <span class="tok-prop">--nyd-color-primary-light</span>:  <span class="tok-value">#ede9fe</span>;
+  <span class="tok-prop">--nyd-color-primary-alpha</span>:  <span class="tok-value">rgba(109, 40, 217, 0.15)</span>;
+
+  <span class="tok-comment">/* Font */</span>
+  <span class="tok-prop">--nyd-font-sans</span>: <span class="tok-value">'Inter', system-ui, sans-serif</span>;
+
+  <span class="tok-comment">/* Rounder UI */</span>
+  <span class="tok-prop">--nyd-radius-lg</span>:  <span class="tok-value">10px</span>;
+  <span class="tok-prop">--nyd-radius-xl</span>:  <span class="tok-value">14px</span>;
+  <span class="tok-prop">--nyd-radius-2xl</span>: <span class="tok-value">20px</span>;
+}</pre>
+</div>
+
+<h3 class="doc-h3">Pre-built theme examples</h3>
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">css</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre"><span class="tok-comment">/* ── Emerald theme ─────────────────────────────────── */</span>
+<span class="tok-selector">:root</span> {
+  <span class="tok-prop">--nyd-color-primary</span>:        <span class="tok-value">#059669</span>;
+  <span class="tok-prop">--nyd-color-primary-hover</span>:  <span class="tok-value">#047857</span>;
+  <span class="tok-prop">--nyd-color-primary-light</span>:  <span class="tok-value">#ecfdf5</span>;
+  <span class="tok-prop">--nyd-color-primary-alpha</span>:  <span class="tok-value">rgba(5, 150, 105, 0.15)</span>;
+}
+
+<span class="tok-comment">/* ── Rose theme ────────────────────────────────────── */</span>
+<span class="tok-selector">:root</span> {
+  <span class="tok-prop">--nyd-color-primary</span>:        <span class="tok-value">#e11d48</span>;
+  <span class="tok-prop">--nyd-color-primary-hover</span>:  <span class="tok-value">#be123c</span>;
+  <span class="tok-prop">--nyd-color-primary-light</span>:  <span class="tok-value">#fff1f2</span>;
+  <span class="tok-prop">--nyd-color-primary-alpha</span>:  <span class="tok-value">rgba(225, 29, 72, 0.15)</span>;
+}
+
+<span class="tok-comment">/* ── Scoped dark section on a light page ───────────── */</span>
+<span class="tok-selector">.hero-dark</span> {
+  <span class="tok-prop">--nyd-color-text</span>:    <span class="tok-value">#f0f0f0</span>;
+  <span class="tok-prop">--nyd-color-bg</span>:     <span class="tok-value">#0f1117</span>;
+  <span class="tok-prop">--nyd-color-border</span>: <span class="tok-value">rgba(255,255,255,.1)</span>;
+}</pre>
+</div>
+
+<h3 class="doc-h3">Adding custom components</h3>
+<p class="doc-p">Create new components that follow the nydcss convention — use design tokens instead of raw values so they automatically adapt to dark mode and theme overrides:</p>
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">css</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre"><span class="tok-comment">/* ✅ Good — uses tokens, works in all themes */</span>
+<span class="tok-selector">.my-panel</span> {
+  background: <span class="tok-value">var(--nyd-color-surface-2)</span>;
+  border: <span class="tok-value">1px solid var(--nyd-color-border)</span>;
+  border-radius: <span class="tok-value">var(--nyd-radius-xl)</span>;
+  padding: <span class="tok-value">var(--nyd-space-6)</span>;
+  color: <span class="tok-value">var(--nyd-color-text)</span>;
+}
+
+<span class="tok-comment">/* ❌ Avoid — hardcoded values break dark mode */</span>
+<span class="tok-selector">.my-panel</span> {
+  background: <span class="tok-value">#f9fafb</span>;
+  border: <span class="tok-value">1px solid #e5e7eb</span>;
+}</pre>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     CRITICAL CSS
+     ═══════════════════════════════════════════════════════════════════ -->
+<span class="doc-section-anchor" id="critical-css"></span>
+<h2 class="doc-h2">Critical CSS Pattern</h2>
+<p class="doc-p">nydcss's modular architecture makes it easy to inline above-fold critical CSS and async-load the rest, inspired by Addy Osmani's <em>critical</em> methodology and <em>filamentgroup/loadCSS</em>.</p>
+
+<div class="doc-code-wrap">
+  <div class="doc-code-bar"><span class="doc-code-lang">html</span><button class="doc-copy-btn" onclick="copyCode(this)">⎘ Copy</button></div>
+  <pre class="doc-pre">&lt;head&gt;
+  <span class="tok-comment">&lt;!-- Inline critical CSS: tokens + reset + layout --&gt;</span>
+  &lt;style&gt;
+    <span class="tok-at">@import</span> <span class="tok-string">"nydcss/src/nyd-tokens.css"</span>;
+    <span class="tok-at">@import</span> <span class="tok-string">"nydcss/src/nyd-reset.css"</span>;
+    <span class="tok-at">@import</span> <span class="tok-string">"nydcss/src/nyd-layout.css"</span>;
+  &lt;/style&gt;
+
+  <span class="tok-comment">&lt;!-- Async-load the rest --&gt;</span>
+  &lt;link rel="preload" href="<span class="tok-string">nydcss/dist/nyd.css</span>" as="style"
+        onload="this.onload=null;this.rel='stylesheet'"&gt;
+  &lt;noscript&gt;
+    &lt;link rel="stylesheet" href="<span class="tok-string">nydcss/dist/nyd.css</span>"&gt;
+  &lt;/noscript&gt;
+&lt;/head&gt;</pre>
+</div>
+
+<div class="doc-note doc-note-tip">
+  <span class="doc-note-icon">⚡</span>
+  <div class="doc-note-body"><strong>Performance tip:</strong> The tokens + reset layers are only ~12KB combined. Inlining them eliminates render-blocking CSS for above-fold content while the full framework loads asynchronously.</div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     BROWSER SUPPORT
+     ═══════════════════════════════════════════════════════════════════ -->
+<span class="doc-section-anchor" id="browser-support"></span>
+<h2 class="doc-h2">Browser Support</h2>
+
+<table class="doc-table">
+  <thead><tr><th>Browser</th><th>Minimum version</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td>Chrome / Edge</td><td>88+</td><td>Full support</td></tr>
+    <tr><td>Firefox</td><td>89+</td><td>Full support</td></tr>
+    <tr><td>Safari</td><td>14.1+</td><td><code class="ic">gap</code> in flex requires 14.1+</td></tr>
+    <tr><td>iOS Safari</td><td>14.5+</td><td>Full support</td></tr>
+    <tr><td>Internet Explorer</td><td>—</td><td>Not supported</td></tr>
+  </tbody>
+</table>
+
+<h3 class="doc-h3">CSS features used</h3>
+<table class="doc-table">
+  <thead><tr><th>Feature</th><th>Used for</th></tr></thead>
+  <tbody>
+    <tr><td>CSS Custom Properties</td><td>Design tokens, theming, dark mode</td></tr>
+    <tr><td>CSS Grid + <code class="ic">gap</code></td><td>Layout, grid utilities</td></tr>
+    <tr><td>Flexbox + <code class="ic">gap</code></td><td>Flex utilities, components</td></tr>
+    <tr><td><code class="ic">aspect-ratio</code></td><td>Ratio utilities</td></tr>
+    <tr><td><code class="ic">:focus-visible</code></td><td>Keyboard focus rings</td></tr>
+    <tr><td><code class="ic">accent-color</code></td><td>Checkbox, radio, range tinting</td></tr>
+    <tr><td><code class="ic">backdrop-filter</code></td><td><code class="ic">.navbar-glass</code> (gracefully degraded)</td></tr>
+    <tr><td><code class="ic">@media (prefers-color-scheme)</code></td><td>Automatic dark mode</td></tr>
+    <tr><td><code class="ic">@media (prefers-reduced-motion)</code></td><td>Animation opt-out</td></tr>
+    <tr><td><code class="ic">scroll-behavior: smooth</code></td><td>Smooth anchor navigation</td></tr>
+  </tbody>
+</table>
+
+<div class="doc-divider"></div>
+
+<p style="font-size:13px;color:var(--doc-text-muted);text-align:center;">
+  nydcss v1.0.0 · MIT License · Built with ❤️
+</p>
+
+</div><!-- end .doc-content -->
+</main><!-- end .doc-main -->
+
+<script>
+/* ── Theme ───────────────────────────────────────────────── */
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.dataset.theme === 'dark';
+  html.dataset.theme = isDark ? 'light' : 'dark';
+  document.getElementById('theme-btn').textContent = isDark ? '🌙' : '☀️';
+  try { localStorage.setItem('nyd-docs-theme', html.dataset.theme); } catch(e){}
+}
+(function initTheme() {
+  try {
+    const saved = localStorage.getItem('nyd-docs-theme');
+    if (saved) {
+      document.documentElement.dataset.theme = saved;
+      if (saved === 'dark') document.getElementById('theme-btn').textContent = '☀️';
+    }
+  } catch(e){}
+})();
+
+/* ── Mobile sidebar ──────────────────────────────────────── */
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+document.addEventListener('click', e => {
+  const sidebar = document.getElementById('sidebar');
+  if (sidebar.classList.contains('open') && !sidebar.contains(e.target) && !e.target.closest('.doc-mobile-menu-btn')) {
+    sidebar.classList.remove('open');
+  }
+});
+
+/* ── Copy code ───────────────────────────────────────────── */
+function copyCode(btn) {
+  const pre = btn.closest('.doc-code-wrap').querySelector('pre');
+  const text = pre.innerText || pre.textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✓ Copied';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '⎘ Copy'; btn.classList.remove('copied'); }, 1800);
+  }).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    btn.textContent = '✓ Copied'; btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '⎘ Copy'; btn.classList.remove('copied'); }, 1800);
+  });
+}
+
+/* ── Active sidebar link on scroll ──────────────────────── */
+const anchors = document.querySelectorAll('.doc-section-anchor[id]');
+const navItems = document.querySelectorAll('.doc-nav-item[href]');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      navItems.forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+      });
+    }
+  });
+}, { rootMargin: '-56px 0px -70% 0px', threshold: 0 });
+anchors.forEach(a => observer.observe(a));
+
+/* ── Smooth scroll sidebar to active item ────────────────── */
+navItems.forEach(a => {
+  a.addEventListener('click', e => {
+    const sidebar = document.getElementById('sidebar');
+    if (window.innerWidth < 768) sidebar.classList.remove('open');
+    setTimeout(() => {
+      const active = sidebar.querySelector('.doc-nav-item.active');
+      if (active) active.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }, 100);
+  });
+});
+
+/* ── Search placeholder ──────────────────────────────────── */
+function focusSearch() {
+  const q = prompt('Search docs…');
+  if (!q) return;
+  const items = [...navItems].find(a => a.textContent.toLowerCase().includes(q.toLowerCase()));
+  if (items) items.click();
+}
+document.addEventListener('keydown', e => {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); focusSearch(); }
+});
+</script>
+</body>
+</html>

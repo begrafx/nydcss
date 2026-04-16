@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>nydcss — Component Showcase</title>
+  <link rel="stylesheet" href="../dist/nyd.css">
+  <style>
+    /* Demo-specific: sidebar nav layout */
+    .demo-layout {
+      display: flex;
+      min-height: 100vh;
+    }
+    .demo-sidebar {
+      width: 220px;
+      flex-shrink: 0;
+      border-right: 1px solid var(--nyd-color-border);
+      padding: var(--nyd-space-6) var(--nyd-space-4);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      background: var(--nyd-color-surface-2);
+    }
+    .demo-main {
+      flex: 1;
+      min-width: 0;
+      padding: var(--nyd-space-8) var(--nyd-space-10);
+      max-width: 900px;
+    }
+    .section {
+      margin-bottom: var(--nyd-space-16);
+      padding-top: var(--nyd-space-4);
+    }
+    .section-title {
+      font-size: var(--nyd-text-2xl);
+      font-weight: var(--nyd-font-bold);
+      border-bottom: 1px solid var(--nyd-color-border);
+      padding-bottom: var(--nyd-space-3);
+      margin-bottom: var(--nyd-space-6);
+      color: var(--nyd-color-text);
+    }
+    .demo-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--nyd-space-3);
+      margin-bottom: var(--nyd-space-4);
+    }
+    .demo-label {
+      font-size: var(--nyd-text-xs);
+      font-weight: var(--nyd-font-semibold);
+      color: var(--nyd-color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: var(--nyd-space-2);
+      margin-top: var(--nyd-space-4);
+    }
+    .code {
+      display: inline-block;
+      font-family: var(--nyd-font-mono);
+      font-size: var(--nyd-text-xs);
+      background: var(--nyd-color-surface-3);
+      border: 1px solid var(--nyd-color-border);
+      border-radius: var(--nyd-radius-sm);
+      padding: 0.1em 0.4em;
+      color: var(--nyd-color-text);
+    }
+    @media (max-width: 768px) {
+      .demo-sidebar { display: none; }
+      .demo-main { padding: var(--nyd-space-6) var(--nyd-space-4); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="demo-layout">
+
+  <!-- Sidebar Navigation -->
+  <aside class="demo-sidebar nyd-scrollbar">
+    <div style="margin-bottom: var(--nyd-space-6);">
+      <span style="font-size: var(--nyd-text-xl); font-weight: var(--nyd-font-bold); color: var(--nyd-color-primary);">nyd</span><span style="font-size: var(--nyd-text-xl); font-weight: var(--nyd-font-bold);">css</span>
+      <div style="font-size: var(--nyd-text-xs); color: var(--nyd-color-text-muted); margin-top: 2px;">v1.0.0</div>
+    </div>
+
+    <button class="btn btn-secondary btn-sm btn-wide mb-4" onclick="toggleTheme()" id="theme-btn">
+      🌙 Dark Mode
+    </button>
+
+    <nav class="sidenav">
+      <div class="sidenav-title">Tokens</div>
+      <a href="#tokens">Design Tokens</a>
+      <a href="#colors">Colors</a>
+      <div class="sidenav-title">Layout</div>
+      <a href="#grid">Grid</a>
+      <a href="#flex">Flexbox</a>
+      <div class="sidenav-title">Components</div>
+      <a href="#buttons">Buttons</a>
+      <a href="#forms">Forms</a>
+      <a href="#cards">Cards</a>
+      <a href="#badges">Badges</a>
+      <a href="#alerts">Alerts</a>
+      <a href="#nav">Navigation</a>
+      <a href="#tables">Tables</a>
+      <a href="#progress">Progress</a>
+      <a href="#avatars">Avatars</a>
+      <a href="#tooltips">Tooltips</a>
+      <a href="#skeletons">Skeletons</a>
+      <a href="#stats">Stats</a>
+      <a href="#accordion">Accordion</a>
+      <div class="sidenav-title">Utilities</div>
+      <a href="#typography">Typography</a>
+      <a href="#animations">Animations</a>
+      <a href="#prose">Prose</a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="demo-main">
+
+    <!-- Hero -->
+    <div style="margin-bottom: var(--nyd-space-12);">
+      <div class="flex items-center gap-3 mb-4">
+        <span style="font-size: var(--nyd-text-4xl); font-weight: var(--nyd-font-black); color: var(--nyd-color-primary);">nyd</span><span style="font-size: var(--nyd-text-4xl); font-weight: var(--nyd-font-black);">css</span>
+        <span class="badge badge-primary badge-pill badge-lg">v1.0.0</span>
+      </div>
+      <p style="font-size: var(--nyd-text-lg); color: var(--nyd-color-text-muted); max-width: 55ch; line-height: var(--nyd-leading-relaxed);">
+        A modern, composable CSS framework synthesizing the strongest ideas from UnoCSS, Tailwind, Bootstrap, Bulma, water.css, normalize.css, animate.css, and 15+ more.
+      </p>
+      <div class="demo-row mt-6">
+        <code class="code">npm install nydcss</code>
+        <span class="badge badge-success">~108KB uncompressed</span>
+        <span class="badge">~13KB gzip</span>
+        <span class="badge badge-info">Zero dependencies</span>
+      </div>
+    </div>
+
+    <!-- COLORS -->
+    <div class="section" id="colors">
+      <h2 class="section-title">Color Palette</h2>
+      <p class="text-muted text-sm mb-6">Full semantic color system via CSS custom properties. Auto dark mode.</p>
+      <div class="grid grid-cols-5 gap-3 mb-6" style="grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));">
+        <div>
+          <div style="height:40px; background: var(--nyd-blue-500); border-radius: var(--nyd-radius-md);"></div>
+          <div class="text-xs text-muted mt-1 text-center">Blue</div>
+        </div>
+        <div>
+          <div style="height:40px; background: var(--nyd-purple-500); border-radius: var(--nyd-radius-md);"></div>
+          <div class="text-xs text-muted mt-1 text-center">Purple</div>
+        </div>
+        <div>
+          <div style="height:40px; background: var(--nyd-green-500); border-radius: var(--nyd-radius-md);"></div>
+          <div class="text-xs text-muted mt-1 text-center">Green</div>
+        </div>
+        <div>
+          <div style="height:40px; background: var(--nyd-amber-500); border-radius: var(--nyd-radius-md);"></div>
+          <div class="text-xs text-muted mt-1 text-center">Amber</div>
+        </div>
+        <div>
+          <div style="height:40px; background: var(--nyd-red-500); border-radius: var(--nyd-radius-md);"></div>
+          <div class="text-xs text-muted mt-1 text-center">Red</div>
+        </div>
+      </div>
+      <div class="auto-grid-md gap-3">
+        <div class="card card-body">
+          <div class="stat">
+            <span class="stat-label">Primary</span>
+            <code class="code">--nyd-color-primary</code>
+          </div>
+        </div>
+        <div class="card card-body">
+          <div class="stat">
+            <span class="stat-label">Surface</span>
+            <code class="code">--nyd-color-surface</code>
+          </div>
+        </div>
+        <div class="card card-body">
+          <div class="stat">
+            <span class="stat-label">Border</span>
+            <code class="code">--nyd-color-border</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BUTTONS -->
+    <div class="section" id="buttons">
+      <h2 class="section-title">Buttons</h2>
+
+      <p class="demo-label">Variants</p>
+      <div class="demo-row">
+        <button class="btn btn-primary">Primary</button>
+        <button class="btn btn-secondary">Secondary</button>
+        <button class="btn btn-outline">Outline</button>
+        <button class="btn btn-ghost">Ghost</button>
+        <button class="btn btn-danger">Danger</button>
+        <button class="btn btn-success">Success</button>
+        <button class="btn btn-link">Link</button>
+      </div>
+
+      <p class="demo-label">Sizes</p>
+      <div class="demo-row" style="align-items: flex-end;">
+        <button class="btn btn-primary btn-xs">X-Small</button>
+        <button class="btn btn-primary btn-sm">Small</button>
+        <button class="btn btn-primary">Default</button>
+        <button class="btn btn-primary btn-lg">Large</button>
+        <button class="btn btn-primary btn-xl">X-Large</button>
+      </div>
+
+      <p class="demo-label">States & Special</p>
+      <div class="demo-row">
+        <button class="btn btn-primary" disabled>Disabled</button>
+        <button class="btn btn-primary btn-loading">Loading</button>
+        <button class="btn btn-primary btn-circle btn-lg" style="width:3rem; height:3rem;">+</button>
+        <button class="btn btn-secondary btn-square">★</button>
+      </div>
+
+      <p class="demo-label">Button Group</p>
+      <div class="btn-group">
+        <button class="btn btn-secondary">Left</button>
+        <button class="btn btn-secondary active" style="background:var(--nyd-color-surface-3)">Center</button>
+        <button class="btn btn-secondary">Right</button>
+      </div>
+    </div>
+
+    <!-- FORMS -->
+    <div class="section" id="forms">
+      <h2 class="section-title">Forms</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="stack-4">
+          <div class="form-group">
+            <label class="label label-required" for="d-name">Full name</label>
+            <input class="input" id="d-name" type="text" placeholder="Jane Smith">
+          </div>
+          <div class="form-group">
+            <label class="label" for="d-email">Email</label>
+            <input class="input" id="d-email" type="email" placeholder="jane@example.com">
+            <span class="form-hint">We'll never share your email.</span>
+          </div>
+          <div class="form-group">
+            <label class="label" for="d-select">Role</label>
+            <select class="select" id="d-select">
+              <option>Designer</option>
+              <option>Engineer</option>
+              <option>Manager</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="label" for="d-msg">Message</label>
+            <textarea class="textarea" id="d-msg" rows="3" placeholder="Your message..."></textarea>
+          </div>
+        </div>
+        <div class="stack-4">
+          <div class="form-group">
+            <label class="label">Search</label>
+            <div class="input-group">
+              <span class="input-group-prepend">🔍</span>
+              <input class="input" type="search" placeholder="Search...">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="label">URL</label>
+            <div class="input-group">
+              <input class="input" type="text" placeholder="your-domain">
+              <span class="input-group-append">.com</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="label">Error state</label>
+            <input class="input input-error" type="text" value="invalid value">
+            <span class="form-error-msg">This value is not valid.</span>
+          </div>
+          <div class="form-group">
+            <label class="label">Notifications</label>
+            <label class="flex items-center gap-3 cursor-pointer">
+              <span class="toggle">
+                <input type="checkbox" checked>
+                <span class="toggle-slider"></span>
+              </span>
+              <span class="text-sm">Email notifications</span>
+            </label>
+            <label class="flex items-center gap-3 cursor-pointer mt-2">
+              <span class="toggle">
+                <input type="checkbox">
+                <span class="toggle-slider"></span>
+              </span>
+              <span class="text-sm">Push notifications</span>
+            </label>
+          </div>
+          <div class="form-group">
+            <label class="label">Volume</label>
+            <input type="range" min="0" max="100" value="60">
+          </div>
+          <div class="form-group">
+            <label class="label">Preferences</label>
+            <label class="checkbox">
+              <input type="checkbox" checked>
+              <span>Receive weekly digest</span>
+            </label>
+            <label class="radio mt-2">
+              <input type="radio" name="plan" checked>
+              <span>Free plan</span>
+            </label>
+            <label class="radio mt-1">
+              <input type="radio" name="plan">
+              <span>Pro plan</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARDS -->
+    <div class="section" id="cards">
+      <h2 class="section-title">Cards</h2>
+      <div class="auto-grid-md gap-5">
+        <div class="card card-hover">
+          <div style="height:120px; background: linear-gradient(135deg, var(--nyd-blue-400), var(--nyd-purple-500));"></div>
+          <div class="card-body">
+            <h3 class="card-title">Featured Article</h3>
+            <p class="card-subtitle">Apr 15, 2026</p>
+            <p class="text-sm text-muted mt-2">A hover-lift card with an image header and footer action.</p>
+          </div>
+          <div class="card-footer flex justify-between items-center">
+            <span class="badge badge-primary">Technology</span>
+            <button class="btn btn-ghost btn-sm">Read more →</button>
+          </div>
+        </div>
+        <div class="card card-elevated">
+          <div class="card-header">
+            <h3 class="card-title">Elevated Card</h3>
+            <p class="card-subtitle">No border, shadow only</p>
+          </div>
+          <div class="card-body">
+            <p class="text-sm text-muted">Uses <code class="code">.card-elevated</code> — shadow instead of border.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="flex items-start justify-between mb-4">
+              <div class="avatar avatar-lg" style="background: var(--nyd-color-primary-light); color: var(--nyd-color-primary);">JD</div>
+              <span class="badge badge-pill badge-success">Active</span>
+            </div>
+            <h3 class="card-title">Jane Doe</h3>
+            <p class="card-subtitle">Senior Designer · Acme Corp</p>
+            <div class="divider mt-4 mb-3">Contact</div>
+            <p class="text-xs text-muted">jane@acme.com</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BADGES -->
+    <div class="section" id="badges">
+      <h2 class="section-title">Badges & Chips</h2>
+
+      <p class="demo-label">Badges</p>
+      <div class="demo-row">
+        <span class="badge">Default</span>
+        <span class="badge badge-primary">Primary</span>
+        <span class="badge badge-success">Success</span>
+        <span class="badge badge-warning">Warning</span>
+        <span class="badge badge-danger">Danger</span>
+        <span class="badge badge-info">Info</span>
+        <span class="badge badge-solid-primary badge-pill">Solid Pill</span>
+      </div>
+
+      <p class="demo-label">Dot Badges</p>
+      <div class="demo-row">
+        <span class="badge-dot text-success">Online</span>
+        <span class="badge-dot text-warning">Away</span>
+        <span class="badge-dot text-danger">Offline</span>
+      </div>
+
+      <p class="demo-label">Chips (dismissible)</p>
+      <div class="demo-row">
+        <span class="chip">React</span>
+        <span class="chip chip-interactive">TypeScript</span>
+        <span class="chip">CSS
+          <button class="chip-remove" aria-label="remove">×</button>
+        </span>
+        <span class="chip chip-interactive">Node.js
+          <button class="chip-remove" aria-label="remove">×</button>
+        </span>
+      </div>
+    </div>
+
+    <!-- ALERTS -->
+    <div class="section" id="alerts">
+      <h2 class="section-title">Alerts & Callouts</h2>
+      <div class="stack-3">
+        <div class="alert alert-info">
+          <div class="alert-content">
+            <p class="alert-title">Information</p>
+            <p>Your account has been updated successfully.</p>
+          </div>
+        </div>
+        <div class="alert alert-success">
+          <div class="alert-content">
+            <p class="alert-title">Success!</p>
+            <p>Your changes have been saved.</p>
+          </div>
+        </div>
+        <div class="alert alert-warning">
+          <div class="alert-content">
+            <p class="alert-title">Warning</p>
+            <p>Your subscription expires in 3 days.</p>
+          </div>
+        </div>
+        <div class="alert alert-danger">
+          <div class="alert-content">
+            <p class="alert-title">Error</p>
+            <p>Unable to process your request. Please try again.</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="demo-label">Callouts</p>
+      <div class="stack-3">
+        <div class="callout callout-info">
+          <p class="callout-title">💡 Pro Tip</p>
+          <p class="text-sm text-muted">Use CSS custom properties to theme any component at the scope level — no extra specificity required.</p>
+        </div>
+        <div class="callout callout-warning">
+          <p class="callout-title">⚠️ Deprecation Notice</p>
+          <p class="text-sm text-muted">The <code class="code">.btn-flat</code> class is deprecated. Use <code class="code">.btn-ghost</code> instead.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- NAVIGATION -->
+    <div class="section" id="nav">
+      <h2 class="section-title">Navigation</h2>
+
+      <p class="demo-label">Navbar</p>
+      <div class="card overflow-hidden mb-6">
+        <nav class="navbar">
+          <a class="navbar-brand" href="#">Brand</a>
+          <ul class="navbar-nav">
+            <li><a href="#" class="active">Home</a></li>
+            <li><a href="#">Docs</a></li>
+            <li><a href="#">Pricing</a></li>
+          </ul>
+          <div class="navbar-spacer"></div>
+          <button class="btn btn-ghost btn-sm">Log in</button>
+          <button class="btn btn-primary btn-sm">Sign up</button>
+        </nav>
+      </div>
+
+      <p class="demo-label">Tabs</p>
+      <nav class="tabs mb-4">
+        <button class="tab active">Overview</button>
+        <button class="tab">Activity</button>
+        <button class="tab">Settings</button>
+        <button class="tab">Billing</button>
+      </nav>
+
+      <p class="demo-label">Pills Tabs</p>
+      <nav class="tabs tabs-pills mb-4">
+        <button class="tab active">All</button>
+        <button class="tab">Active</button>
+        <button class="tab">Archived</button>
+      </nav>
+
+      <p class="demo-label">Breadcrumb</p>
+      <ol class="breadcrumb mb-4">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Components</a></li>
+        <li>Navigation</li>
+      </ol>
+    </div>
+
+    <!-- TABLES -->
+    <div class="section" id="tables">
+      <h2 class="section-title">Tables</h2>
+      <div class="table-wrap">
+        <table class="table table-striped table-hover table-rounded">
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Role</th>
+              <th>Status</th>
+              <th>Joined</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="flex items-center gap-3">
+                  <span class="avatar avatar-sm" style="background: var(--nyd-color-primary-light); color: var(--nyd-color-primary);">AB</span>
+                  <div>
+                    <div class="font-medium text-sm">Alice Brown</div>
+                    <div class="text-xs text-muted">alice@example.com</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="badge">Admin</span></td>
+              <td><span class="badge badge-pill badge-success">Active</span></td>
+              <td class="text-muted text-sm">Jan 12, 2026</td>
+              <td><button class="btn btn-ghost btn-xs">Edit</button></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="flex items-center gap-3">
+                  <span class="avatar avatar-sm" style="background: var(--nyd-color-warning-light); color: var(--nyd-color-warning);">BC</span>
+                  <div>
+                    <div class="font-medium text-sm">Bob Chen</div>
+                    <div class="text-xs text-muted">bob@example.com</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="badge">Member</span></td>
+              <td><span class="badge badge-pill badge-warning">Pending</span></td>
+              <td class="text-muted text-sm">Mar 5, 2026</td>
+              <td><button class="btn btn-ghost btn-xs">Edit</button></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="flex items-center gap-3">
+                  <span class="avatar avatar-sm" style="background: var(--nyd-color-danger-light); color: var(--nyd-color-danger);">CD</span>
+                  <div>
+                    <div class="font-medium text-sm">Carol Davis</div>
+                    <div class="text-xs text-muted">carol@example.com</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="badge">Viewer</span></td>
+              <td><span class="badge badge-pill badge-danger">Suspended</span></td>
+              <td class="text-muted text-sm">Apr 1, 2026</td>
+              <td><button class="btn btn-ghost btn-xs">Edit</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PROGRESS & SPINNERS -->
+    <div class="section" id="progress">
+      <h2 class="section-title">Progress & Spinners</h2>
+
+      <p class="demo-label">Progress Bars</p>
+      <div class="stack-3 mb-6">
+        <div>
+          <div class="flex justify-between text-xs text-muted mb-1"><span>Storage</span><span>72%</span></div>
+          <div class="progress"><div class="progress-bar" style="width:72%"></div></div>
+        </div>
+        <div>
+          <div class="progress progress-sm"><div class="progress-bar progress-bar-success" style="width:45%"></div></div>
+        </div>
+        <div>
+          <div class="progress progress-lg"><div class="progress-bar progress-bar-warning progress-bar-striped progress-bar-animated" style="width:60%"></div></div>
+        </div>
+        <div>
+          <div class="progress progress-xl"><div class="progress-bar progress-bar-danger" style="width:90%"></div></div>
+        </div>
+      </div>
+
+      <p class="demo-label">Spinners</p>
+      <div class="demo-row" style="align-items: center;">
+        <span class="spinner spinner-sm"></span>
+        <span class="spinner"></span>
+        <span class="spinner spinner-lg"></span>
+        <span class="spinner spinner-xl"></span>
+        <span class="spinner spinner-success"></span>
+        <span class="spinner spinner-danger"></span>
+      </div>
+    </div>
+
+    <!-- AVATARS -->
+    <div class="section" id="avatars">
+      <h2 class="section-title">Avatars</h2>
+      <p class="demo-label">Sizes</p>
+      <div class="demo-row" style="align-items: flex-end;">
+        <span class="avatar avatar-xs">XS</span>
+        <span class="avatar avatar-sm">SM</span>
+        <span class="avatar">MD</span>
+        <span class="avatar avatar-lg">LG</span>
+        <span class="avatar avatar-xl">XL</span>
+      </div>
+      <p class="demo-label">Colors</p>
+      <div class="demo-row">
+        <span class="avatar" style="background:var(--nyd-color-primary-light);color:var(--nyd-color-primary);">AB</span>
+        <span class="avatar" style="background:var(--nyd-color-success-light);color:var(--nyd-color-success);">CD</span>
+        <span class="avatar" style="background:var(--nyd-color-warning-light);color:var(--nyd-color-warning);">EF</span>
+        <span class="avatar" style="background:var(--nyd-color-danger-light);color:var(--nyd-color-danger);">GH</span>
+      </div>
+      <p class="demo-label">Avatar Group</p>
+      <div class="avatar-group">
+        <span class="avatar avatar-sm" style="background:var(--nyd-color-primary-light);color:var(--nyd-color-primary);">A</span>
+        <span class="avatar avatar-sm" style="background:var(--nyd-color-success-light);color:var(--nyd-color-success);">B</span>
+        <span class="avatar avatar-sm" style="background:var(--nyd-color-warning-light);color:var(--nyd-color-warning);">C</span>
+        <span class="avatar avatar-sm" style="background:var(--nyd-color-surface-3);color:var(--nyd-color-text-muted);">+4</span>
+      </div>
+    </div>
+
+    <!-- TOOLTIPS -->
+    <div class="section" id="tooltips">
+      <h2 class="section-title">Tooltips</h2>
+      <div class="demo-row" style="padding: var(--nyd-space-6) 0;">
+        <button class="btn btn-secondary" data-tooltip="This appears above">Top (default)</button>
+        <button class="btn btn-secondary" data-tooltip="This appears below" data-tooltip-pos="bottom">Bottom</button>
+        <button class="btn btn-secondary" data-tooltip="Right side!" data-tooltip-pos="right">Right</button>
+        <button class="btn btn-secondary" data-tooltip="Left side!" data-tooltip-pos="left">Left</button>
+      </div>
+    </div>
+
+    <!-- SKELETON -->
+    <div class="section" id="skeletons">
+      <h2 class="section-title">Skeleton Loaders</h2>
+      <div class="auto-grid-md gap-5">
+        <div class="card card-body">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="skeleton skeleton-circle" style="width:2.5rem;height:2.5rem;flex-shrink:0;"></div>
+            <div style="flex:1;">
+              <div class="skeleton skeleton-text" style="width:60%;"></div>
+              <div class="skeleton skeleton-text" style="width:40%;height:0.75em;"></div>
+            </div>
+          </div>
+          <div class="skeleton skeleton-text"></div>
+          <div class="skeleton skeleton-text"></div>
+          <div class="skeleton skeleton-text"></div>
+          <div class="skeleton skeleton-btn mt-4"></div>
+        </div>
+        <div class="card">
+          <div class="skeleton" style="height:120px;border-radius:0;"></div>
+          <div class="card-body">
+            <div class="skeleton skeleton-title mb-3"></div>
+            <div class="skeleton skeleton-text"></div>
+            <div class="skeleton skeleton-text"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="section" id="stats">
+      <h2 class="section-title">Stats / KPIs</h2>
+      <div class="auto-grid-sm gap-4">
+        <div class="card card-body">
+          <div class="stat">
+            <span class="stat-label">Total Revenue</span>
+            <span class="stat-value">$48,295</span>
+            <span class="stat-change-up">↑ 12.5% vs last month</span>
+          </div>
+        </div>
+        <div class="card card-body">
+          <div class="stat">
+            <span class="stat-label">Active Users</span>
+            <span class="stat-value">3,241</span>
+            <span class="stat-change-up">↑ 4.2%</span>
+          </div>
+        </div>
+        <div class="card card-body">
+          <div class="stat">
+            <span class="stat-label">Churn Rate</span>
+            <span class="stat-value">2.4%</span>
+            <span class="stat-change-down">↑ 0.3%</span>
+          </div>
+        </div>
+        <div class="card card-body">
+          <div class="stat">
+            <span class="stat-label">Open Issues</span>
+            <span class="stat-value">17</span>
+            <span class="stat-desc">3 critical</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACCORDION -->
+    <div class="section" id="accordion">
+      <h2 class="section-title">Accordion</h2>
+      <div class="accordion">
+        <div class="accordion-item">
+          <button class="accordion-trigger" aria-expanded="true" onclick="toggleAccordion(this)">
+            What is nydcss?
+            <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="accordion-content">
+            nydcss is a modern CSS framework that synthesizes the best features from 20+ leading CSS libraries. It provides a complete design token system, reset, layout utilities, components, and animations in one cohesive package.
+          </div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion(this)">
+            How does dark mode work?
+            <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="accordion-content" style="display:none;">
+            Dark mode uses CSS custom properties that are automatically swapped via <code class="code">@media (prefers-color-scheme: dark)</code>. You can force a theme with <code class="code">data-theme="dark"</code> or <code class="code">data-theme="light"</code> on the <code class="code">&lt;html&gt;</code> element.
+          </div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion(this)">
+            Can I use it with React / Vue / Svelte?
+            <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="accordion-content" style="display:none;">
+            Yes. nydcss is framework-agnostic plain CSS. Import it once and use the class names anywhere. No JavaScript required. The modular architecture also lets you import only the layers you need.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TYPOGRAPHY -->
+    <div class="section" id="typography">
+      <h2 class="section-title">Typography</h2>
+      <div class="card card-body mb-6">
+        <div style="font-size: var(--nyd-text-4xl); font-weight: var(--nyd-font-bold); line-height:1.1;" class="mb-2">Display heading</div>
+        <div style="font-size: var(--nyd-text-3xl); font-weight: var(--nyd-font-bold);" class="mb-2">Page title</div>
+        <div style="font-size: var(--nyd-text-2xl); font-weight: var(--nyd-font-semibold);" class="mb-2">Section heading</div>
+        <div style="font-size: var(--nyd-text-xl); font-weight: var(--nyd-font-medium);" class="mb-2">Sub-section</div>
+        <div style="font-size: var(--nyd-text-lg);" class="mb-2">Lead text — slightly larger body copy</div>
+        <div class="mb-2">Base text — 16px, regular weight, used for most UI content throughout the app.</div>
+        <div class="text-sm text-muted mb-2">Small muted text — 14px, used for metadata, labels, and secondary content.</div>
+        <div class="text-xs text-subtle">Extra small subtle — 12px, captions, footnotes, timestamps.</div>
+      </div>
+      <div class="demo-row">
+        <kbd>Ctrl</kbd> + <kbd>K</kbd>
+        <mark>highlighted text</mark>
+        <code class="code">inline code</code>
+        <del>deleted text</del>
+        <abbr title="Cascading Style Sheets">CSS</abbr>
+      </div>
+    </div>
+
+    <!-- ANIMATIONS -->
+    <div class="section" id="animations">
+      <h2 class="section-title">Animations</h2>
+      <div class="demo-row" style="flex-wrap: wrap; gap: 1.5rem; align-items: center;">
+        <div class="card card-body text-center" style="min-width:90px;">
+          <div class="animate-spin spinner mx-auto mb-2"></div>
+          <span class="text-xs text-muted">spin</span>
+        </div>
+        <div class="card card-body text-center" style="min-width:90px;">
+          <div class="animate-pulse" style="width:2.5rem;height:2.5rem;background:var(--nyd-color-primary);border-radius:50%;margin:0 auto var(--nyd-space-2);"></div>
+          <span class="text-xs text-muted">pulse</span>
+        </div>
+        <div class="card card-body text-center" style="min-width:90px;">
+          <div class="animate-bounce" style="width:1.5rem;height:1.5rem;background:var(--nyd-color-success);border-radius:50%;margin:0 auto var(--nyd-space-2);"></div>
+          <span class="text-xs text-muted">bounce</span>
+        </div>
+        <div class="card card-body text-center" style="min-width:90px;">
+          <div class="animate-float" style="font-size:2rem;margin-bottom:var(--nyd-space-2);">🚀</div>
+          <span class="text-xs text-muted">float</span>
+        </div>
+        <div class="card card-body text-center" style="min-width:90px;">
+          <div class="animate-heartbeat" style="font-size:2rem;margin-bottom:var(--nyd-space-2);">❤️</div>
+          <span class="text-xs text-muted">heartbeat</span>
+        </div>
+        <div class="card card-body text-center" style="min-width:90px;">
+          <div class="animate-ping" style="width:1.5rem;height:1.5rem;background:var(--nyd-color-danger);border-radius:50%;margin:0 auto var(--nyd-space-4);"></div>
+          <span class="text-xs text-muted">ping</span>
+        </div>
+      </div>
+      <div class="demo-row mt-4">
+        <button class="btn btn-secondary btn-sm" onclick="this.classList.add('animate-shake'); setTimeout(()=>this.classList.remove('animate-shake'),600)">Click to shake</button>
+        <button class="btn btn-secondary btn-sm" onclick="this.classList.add('animate-scalein'); setTimeout(()=>this.classList.remove('animate-scalein'),300)">Scale in</button>
+        <button class="btn btn-secondary btn-sm" onclick="this.classList.toggle('animate-wiggle')">Wiggle toggle</button>
+      </div>
+    </div>
+
+    <!-- PROSE -->
+    <div class="section" id="prose">
+      <h2 class="section-title">Prose (Long-form Content)</h2>
+      <div class="card card-body">
+        <article class="nyd-prose">
+          <h1>Article Title</h1>
+          <p>Use <code>.nyd-prose</code> on any container to get beautifully styled long-form content. It handles headings, paragraphs, lists, blockquotes, tables, and code blocks automatically.</p>
+
+          <h2>Section Heading</h2>
+          <p>All headings, spacing, and vertical rhythm are handled so you don't need to add classes to each element. Works perfectly for Markdown-rendered content, CMS output, or documentation pages.</p>
+
+          <ul>
+            <li>Bulleted lists get proper indentation and bullets</li>
+            <li>Nested lists work too</li>
+            <li>Links are styled automatically</li>
+          </ul>
+
+          <blockquote>
+            "The best CSS is the CSS you don't have to write." — Every developer ever.
+          </blockquote>
+
+          <h3>Code Example</h3>
+          <pre><code>import 'nydcss/dist/nyd.css';
+
+// That's it. Start building.</code></pre>
+        </article>
+      </div>
+    </div>
+
+    <!-- Gradient Helpers -->
+    <div class="section">
+      <h2 class="section-title">Gradient Utilities</h2>
+      <div class="auto-grid-sm gap-4">
+        <div class="gradient-primary p-6 rounded-xl text-center" style="color:#fff; font-weight:600;">.gradient-primary</div>
+        <div class="gradient-success p-6 rounded-xl text-center" style="color:#fff; font-weight:600;">.gradient-success</div>
+        <div class="gradient-warm p-6 rounded-xl text-center" style="color:#fff; font-weight:600;">.gradient-warm</div>
+        <div class="gradient-cool p-6 rounded-xl text-center" style="color:#fff; font-weight:600;">.gradient-cool</div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const btn = document.getElementById('theme-btn');
+    if (html.dataset.theme === 'dark') {
+      html.dataset.theme = 'light';
+      btn.textContent = '🌙 Dark Mode';
+    } else {
+      html.dataset.theme = 'dark';
+      btn.textContent = '☀️ Light Mode';
+    }
+  }
+
+  function toggleAccordion(btn) {
+    const expanded = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', !expanded);
+    const content = btn.nextElementSibling;
+    content.style.display = expanded ? 'none' : 'block';
+  }
+
+  // Highlight sidebar link on scroll
+  const sections = document.querySelectorAll('.section[id]');
+  const navLinks = document.querySelectorAll('.sidenav a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 120) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  }, { passive: true });
+</script>
+
+</body>
+</html>
