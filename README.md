@@ -1,5 +1,9 @@
 # nydcss
 
+"Not your Daddy's CSS"
+
+NydCSS (Pronounced "Nid" (rhymes with Rid)) is an exploratory "Best of the Best" project. 
+
 **A modern, composable CSS framework** that synthesizes the strongest ideas from 20+ leading CSS projects into one cohesive, zero-dependency stylesheet.
 
 ---
