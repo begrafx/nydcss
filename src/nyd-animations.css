@@ -1,0 +1,223 @@
+/*
+ * nydcss — Animations & Transitions
+ * Inspired by: animate.css, animae.css, Tailwind transitions,
+ *              UnoCSS animation preset
+ */
+
+/* ─── Core Keyframes ─────────────────────────────────────────────────────── */
+
+@keyframes nyd-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes nyd-ping {
+  0%   { transform: scale(1); opacity: 1; }
+  75%, 100% { transform: scale(2); opacity: 0; }
+}
+
+@keyframes nyd-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}
+
+@keyframes nyd-bounce {
+  0%, 100% { transform: translateY(0); animation-timing-function: cubic-bezier(0.8,0,1,1); }
+  50%       { transform: translateY(-25%); animation-timing-function: cubic-bezier(0,0,0.2,1); }
+}
+
+@keyframes nyd-shimmer {
+  0%   { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes nyd-fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes nyd-fadeout {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+@keyframes nyd-slideup {
+  from { opacity: 0; transform: translateY(16px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes nyd-slidedown {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(16px); }
+}
+
+@keyframes nyd-fadedown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes nyd-slideright {
+  from { opacity: 0; transform: translateX(24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes nyd-slideleft {
+  from { opacity: 0; transform: translateX(-24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes nyd-scalein {
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes nyd-scaleout {
+  from { opacity: 1; transform: scale(1); }
+  to   { opacity: 0; transform: scale(0.9); }
+}
+
+@keyframes nyd-shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+  20%, 40%, 60%, 80% { transform: translateX(4px); }
+}
+
+@keyframes nyd-wiggle {
+  0%, 100% { transform: rotate(0); }
+  25%       { transform: rotate(-5deg); }
+  75%       { transform: rotate(5deg); }
+}
+
+@keyframes nyd-heartbeat {
+  0%, 100% { transform: scale(1); }
+  14%       { transform: scale(1.15); }
+  28%       { transform: scale(1); }
+  42%       { transform: scale(1.15); }
+  70%       { transform: scale(1); }
+}
+
+@keyframes nyd-float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+
+@keyframes nyd-progress-stripes {
+  from { background-position: 0 0; }
+  to   { background-position: 32px 0; }
+}
+
+@keyframes nyd-dots {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+  40%            { transform: scale(1);   opacity: 1; }
+}
+
+@keyframes nyd-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+@keyframes nyd-typewriter {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+
+/* ─── Animation Utility Classes ──────────────────────────────────────────── */
+
+.animate-spin     { animation: nyd-spin 1s linear infinite; }
+.animate-ping     { animation: nyd-ping 1s cubic-bezier(0,0,0.2,1) infinite; }
+.animate-pulse    { animation: nyd-pulse 2s ease-in-out infinite; }
+.animate-bounce   { animation: nyd-bounce 1s infinite; }
+.animate-shimmer  { animation: nyd-shimmer 1.4s ease infinite; }
+.animate-shake    { animation: nyd-shake 0.5s ease; }
+.animate-wiggle   { animation: nyd-wiggle 0.5s ease-in-out; }
+.animate-heartbeat { animation: nyd-heartbeat 1.4s ease infinite; }
+.animate-float    { animation: nyd-float 3s ease-in-out infinite; }
+.animate-fadein   { animation: nyd-fadein var(--nyd-duration-base) ease; }
+.animate-slideup  { animation: nyd-slideup var(--nyd-duration-base) var(--nyd-ease-spring); }
+.animate-scalein  { animation: nyd-scalein var(--nyd-duration-base) var(--nyd-ease-spring); }
+.animate-blink    { animation: nyd-blink 1s step-start infinite; }
+.animate-none     { animation: none; }
+.animate-once     { animation-iteration-count: 1; }
+.animate-twice    { animation-iteration-count: 2; }
+.animate-infinite { animation-iteration-count: infinite; }
+
+/* Duration modifiers */
+.animate-faster  { animation-duration: 0.3s; }
+.animate-fast    { animation-duration: 0.5s; }
+.animate-slow    { animation-duration: 1.5s; }
+.animate-slower  { animation-duration: 2.5s; }
+
+/* Delay modifiers */
+.animate-delay-100 { animation-delay: 100ms; }
+.animate-delay-200 { animation-delay: 200ms; }
+.animate-delay-300 { animation-delay: 300ms; }
+.animate-delay-500 { animation-delay: 500ms; }
+.animate-delay-700 { animation-delay: 700ms; }
+.animate-delay-1000 { animation-delay: 1000ms; }
+
+/* ─── Transition Utilities ───────────────────────────────────────────────── */
+
+.transition-none {
+  transition: none;
+}
+.transition {
+  transition:
+    color var(--nyd-duration-base) var(--nyd-ease-inout),
+    background-color var(--nyd-duration-base) var(--nyd-ease-inout),
+    border-color var(--nyd-duration-base) var(--nyd-ease-inout),
+    box-shadow var(--nyd-duration-base) var(--nyd-ease-inout),
+    opacity var(--nyd-duration-base) var(--nyd-ease-inout);
+}
+.transition-all {
+  transition: all var(--nyd-duration-base) var(--nyd-ease-inout);
+}
+.transition-colors {
+  transition: color var(--nyd-duration-base) ease,
+              background-color var(--nyd-duration-base) ease,
+              border-color var(--nyd-duration-base) ease;
+}
+.transition-opacity { transition: opacity var(--nyd-duration-base) ease; }
+.transition-transform { transition: transform var(--nyd-duration-base) var(--nyd-ease-inout); }
+.transition-shadow { transition: box-shadow var(--nyd-duration-base) ease; }
+.transition-slow { transition-duration: var(--nyd-duration-slow); }
+.transition-fast { transition-duration: var(--nyd-duration-fast); }
+
+/* ─── Transform Utilities ────────────────────────────────────────────────── */
+
+.scale-90  { transform: scale(0.9); }
+.scale-95  { transform: scale(0.95); }
+.scale-100 { transform: scale(1); }
+.scale-105 { transform: scale(1.05); }
+.scale-110 { transform: scale(1.1); }
+.scale-125 { transform: scale(1.25); }
+
+.rotate-0   { transform: rotate(0deg); }
+.rotate-45  { transform: rotate(45deg); }
+.rotate-90  { transform: rotate(90deg); }
+.rotate-180 { transform: rotate(180deg); }
+.-rotate-45 { transform: rotate(-45deg); }
+.-rotate-90 { transform: rotate(-90deg); }
+
+.translate-x-0 { transform: translateX(0); }
+.translate-y-0 { transform: translateY(0); }
+.-translate-y-1 { transform: translateY(-var(--nyd-space-1)); }
+.-translate-y-2 { transform: translateY(calc(-1 * var(--nyd-space-2))); }
+.translate-y-full { transform: translateY(100%); }
+.-translate-y-full { transform: translateY(-100%); }
+
+/* Hover transform shortcuts */
+.hover-up:hover       { transform: translateY(-3px); transition: transform var(--nyd-duration-fast) ease; }
+.hover-scale:hover    { transform: scale(1.03); transition: transform var(--nyd-duration-fast) ease; }
+.hover-shadow:hover   { box-shadow: var(--nyd-shadow-lg); transition: box-shadow var(--nyd-duration-base) ease; }
+.hover-bright:hover   { filter: brightness(1.05); transition: filter var(--nyd-duration-fast) ease; }
+
+/* ─── Reduced Motion ─────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

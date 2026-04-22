@@ -1,0 +1,208 @@
+/*
+ * nydcss — Layout System
+ * Inspired by: Bootstrap grid, Bulma, Tachyons single-responsibility,
+ *              Tailwind flex/grid, mini.css container system
+ */
+
+/* ─── Container ─────────────────────────────────────────────────────────── */
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--nyd-space-4);
+  padding-right: var(--nyd-space-4);
+}
+
+@media (min-width: 640px)  { .container { max-width: 640px;  padding-left: var(--nyd-space-6); padding-right: var(--nyd-space-6); } }
+@media (min-width: 768px)  { .container { max-width: 768px;  } }
+@media (min-width: 1024px) { .container { max-width: 1024px; padding-left: var(--nyd-space-8); padding-right: var(--nyd-space-8); } }
+@media (min-width: 1280px) { .container { max-width: 1280px; } }
+@media (min-width: 1536px) { .container { max-width: 1536px; } }
+
+.container-xs  { max-width: 480px;  margin: 0 auto; padding: 0 var(--nyd-space-4); }
+.container-sm  { max-width: 640px;  margin: 0 auto; padding: 0 var(--nyd-space-4); }
+.container-md  { max-width: 768px;  margin: 0 auto; padding: 0 var(--nyd-space-4); }
+.container-lg  { max-width: 1024px; margin: 0 auto; padding: 0 var(--nyd-space-4); }
+.container-xl  { max-width: 1280px; margin: 0 auto; padding: 0 var(--nyd-space-4); }
+.container-full { width: 100%; }
+.container-prose { max-width: 65ch; margin: 0 auto; }
+
+/* ─── Flexbox Utilities ──────────────────────────────────────────────────── */
+.flex     { display: flex; }
+.inline-flex { display: inline-flex; }
+
+.flex-row     { flex-direction: row; }
+.flex-col     { flex-direction: column; }
+.flex-row-rev { flex-direction: row-reverse; }
+.flex-col-rev { flex-direction: column-reverse; }
+
+.flex-wrap    { flex-wrap: wrap; }
+.flex-nowrap  { flex-wrap: nowrap; }
+.flex-wrap-rev { flex-wrap: wrap-reverse; }
+
+.flex-1     { flex: 1 1 0%; }
+.flex-auto  { flex: 1 1 auto; }
+.flex-none  { flex: none; }
+.flex-initial { flex: 0 1 auto; }
+.shrink-0   { flex-shrink: 0; }
+.grow       { flex-grow: 1; }
+
+.items-start   { align-items: flex-start; }
+.items-end     { align-items: flex-end; }
+.items-center  { align-items: center; }
+.items-stretch { align-items: stretch; }
+.items-baseline { align-items: baseline; }
+
+.justify-start   { justify-content: flex-start; }
+.justify-end     { justify-content: flex-end; }
+.justify-center  { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.justify-around  { justify-content: space-around; }
+.justify-evenly  { justify-content: space-evenly; }
+
+.self-auto    { align-self: auto; }
+.self-start   { align-self: flex-start; }
+.self-end     { align-self: flex-end; }
+.self-center  { align-self: center; }
+.self-stretch { align-self: stretch; }
+
+/* ─── Grid Utilities ─────────────────────────────────────────────────────── */
+.grid        { display: grid; }
+.inline-grid { display: inline-grid; }
+
+.grid-cols-1  { grid-template-columns: repeat(1,  minmax(0,1fr)); }
+.grid-cols-2  { grid-template-columns: repeat(2,  minmax(0,1fr)); }
+.grid-cols-3  { grid-template-columns: repeat(3,  minmax(0,1fr)); }
+.grid-cols-4  { grid-template-columns: repeat(4,  minmax(0,1fr)); }
+.grid-cols-5  { grid-template-columns: repeat(5,  minmax(0,1fr)); }
+.grid-cols-6  { grid-template-columns: repeat(6,  minmax(0,1fr)); }
+.grid-cols-12 { grid-template-columns: repeat(12, minmax(0,1fr)); }
+.grid-cols-none { grid-template-columns: none; }
+
+.grid-rows-1  { grid-template-rows: repeat(1, minmax(0,1fr)); }
+.grid-rows-2  { grid-template-rows: repeat(2, minmax(0,1fr)); }
+.grid-rows-3  { grid-template-rows: repeat(3, minmax(0,1fr)); }
+.grid-rows-4  { grid-template-rows: repeat(4, minmax(0,1fr)); }
+.grid-rows-none { grid-template-rows: none; }
+
+.col-span-1   { grid-column: span 1 / span 1; }
+.col-span-2   { grid-column: span 2 / span 2; }
+.col-span-3   { grid-column: span 3 / span 3; }
+.col-span-4   { grid-column: span 4 / span 4; }
+.col-span-6   { grid-column: span 6 / span 6; }
+.col-span-12  { grid-column: span 12 / span 12; }
+.col-span-full { grid-column: 1 / -1; }
+.col-start-1  { grid-column-start: 1; }
+.col-start-2  { grid-column-start: 2; }
+.col-start-3  { grid-column-start: 3; }
+.col-start-auto { grid-column-start: auto; }
+
+.row-span-1   { grid-row: span 1 / span 1; }
+.row-span-2   { grid-row: span 2 / span 2; }
+.row-span-3   { grid-row: span 3 / span 3; }
+.row-span-full { grid-row: 1 / -1; }
+
+/* ─── Gap ────────────────────────────────────────────────────────────────── */
+.gap-0   { gap: 0; }
+.gap-1   { gap: var(--nyd-space-1); }
+.gap-2   { gap: var(--nyd-space-2); }
+.gap-3   { gap: var(--nyd-space-3); }
+.gap-4   { gap: var(--nyd-space-4); }
+.gap-5   { gap: var(--nyd-space-5); }
+.gap-6   { gap: var(--nyd-space-6); }
+.gap-8   { gap: var(--nyd-space-8); }
+.gap-10  { gap: var(--nyd-space-10); }
+.gap-12  { gap: var(--nyd-space-12); }
+.gap-16  { gap: var(--nyd-space-16); }
+.gap-x-0  { column-gap: 0; }
+.gap-x-2  { column-gap: var(--nyd-space-2); }
+.gap-x-4  { column-gap: var(--nyd-space-4); }
+.gap-x-6  { column-gap: var(--nyd-space-6); }
+.gap-x-8  { column-gap: var(--nyd-space-8); }
+.gap-y-0  { row-gap: 0; }
+.gap-y-2  { row-gap: var(--nyd-space-2); }
+.gap-y-4  { row-gap: var(--nyd-space-4); }
+.gap-y-6  { row-gap: var(--nyd-space-6); }
+.gap-y-8  { row-gap: var(--nyd-space-8); }
+
+/* ─── Display ────────────────────────────────────────────────────────────── */
+.block         { display: block; }
+.inline-block  { display: inline-block; }
+.inline        { display: inline; }
+.hidden        { display: none; }
+.invisible     { visibility: hidden; }
+.contents      { display: contents; }
+
+/* ─── Position ───────────────────────────────────────────────────────────── */
+.relative  { position: relative; }
+.absolute  { position: absolute; }
+.fixed     { position: fixed; }
+.sticky    { position: sticky; }
+.static    { position: static; }
+
+.inset-0       { inset: 0; }
+.top-0         { top: 0; }
+.right-0       { right: 0; }
+.bottom-0      { bottom: 0; }
+.left-0        { left: 0; }
+.top-auto      { top: auto; }
+
+/* ─── Overflow ───────────────────────────────────────────────────────────── */
+.overflow-auto    { overflow: auto; }
+.overflow-hidden  { overflow: hidden; }
+.overflow-visible { overflow: visible; }
+.overflow-scroll  { overflow: scroll; }
+.overflow-x-auto  { overflow-x: auto; }
+.overflow-y-auto  { overflow-y: auto; }
+.overflow-x-hidden { overflow-x: hidden; }
+
+/* ─── Z-Index ────────────────────────────────────────────────────────────── */
+.z-0       { z-index: var(--nyd-z-0); }
+.z-10      { z-index: var(--nyd-z-10); }
+.z-20      { z-index: var(--nyd-z-20); }
+.z-30      { z-index: var(--nyd-z-30); }
+.z-40      { z-index: var(--nyd-z-40); }
+.z-50      { z-index: var(--nyd-z-50); }
+.z-sticky  { z-index: var(--nyd-z-sticky); }
+.z-fixed   { z-index: var(--nyd-z-fixed); }
+.z-modal   { z-index: var(--nyd-z-modal); }
+.z-toast   { z-index: var(--nyd-z-toast); }
+.z-tooltip { z-index: var(--nyd-z-tooltip); }
+.z-auto    { z-index: auto; }
+
+/* ─── Aspect Ratio ───────────────────────────────────────────────────────── */
+.aspect-square   { aspect-ratio: var(--nyd-aspect-square); }
+.aspect-video    { aspect-ratio: var(--nyd-aspect-video); }
+.aspect-4-3      { aspect-ratio: var(--nyd-aspect-4-3); }
+.aspect-portrait { aspect-ratio: var(--nyd-aspect-portrait); }
+
+/* ─── Responsive Grid (fluid, no breakpoints needed) ────────────────────── */
+.auto-grid-sm   { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: var(--nyd-space-4); }
+.auto-grid-md   { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--nyd-space-4); }
+.auto-grid-lg   { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--nyd-space-4); }
+.auto-grid-xl   { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--nyd-space-6); }
+.auto-grid-fill { display: grid; grid-template-columns: repeat(auto-fill, minmax(var(--nyd-col-min, 200px), 1fr)); gap: var(--nyd-space-4); }
+
+/* ─── Stack (vertical rhythm) — inspired by "lobotomized owl" ───────────────*/
+.stack > * + * { margin-top: var(--nyd-space, var(--nyd-space-4)); }
+.stack-2  > * + * { margin-top: var(--nyd-space-2); }
+.stack-4  > * + * { margin-top: var(--nyd-space-4); }
+.stack-6  > * + * { margin-top: var(--nyd-space-6); }
+.stack-8  > * + * { margin-top: var(--nyd-space-8); }
+
+/* ─── Cluster (flex wrap, inline-group) ─────────────────────────────────── */
+.cluster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--nyd-space-2);
+  align-items: center;
+}
+
+/* ─── Sidebar layout ─────────────────────────────────────────────────────── */
+.with-sidebar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--nyd-space-6);
+}
+.with-sidebar > :first-child { flex-basis: var(--nyd-sidebar-width, 260px); flex-shrink: 0; }
+.with-sidebar > :last-child  { flex-basis: 0; flex-grow: 999; min-width: 50%; }

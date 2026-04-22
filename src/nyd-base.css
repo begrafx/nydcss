@@ -1,0 +1,122 @@
+/*
+ * nydcss — Base Prose Styles
+ * Inspired by: water.css, beer.css, halfmoon.css
+ * Styled semantic HTML elements with zero extra classes needed.
+ */
+
+/* ─── Headings ───────────────────────────────────────────────────────────── */
+h1 { font-size: var(--nyd-text-4xl); font-weight: var(--nyd-font-bold);   letter-spacing: var(--nyd-tracking-tight); }
+h2 { font-size: var(--nyd-text-3xl); font-weight: var(--nyd-font-bold);   letter-spacing: var(--nyd-tracking-tight); }
+h3 { font-size: var(--nyd-text-2xl); font-weight: var(--nyd-font-semibold); }
+h4 { font-size: var(--nyd-text-xl);  font-weight: var(--nyd-font-semibold); }
+h5 { font-size: var(--nyd-text-md);  font-weight: var(--nyd-font-medium); }
+h6 { font-size: var(--nyd-text-base); font-weight: var(--nyd-font-medium); }
+
+/* ─── Prose helper ───────────────────────────────────────────────────────── */
+.nyd-prose {
+  max-width: 65ch;
+  color: var(--nyd-color-text);
+}
+.nyd-prose > * + * {
+  margin-top: var(--nyd-space-4);
+}
+.nyd-prose h1, .nyd-prose h2, .nyd-prose h3,
+.nyd-prose h4, .nyd-prose h5, .nyd-prose h6 {
+  margin-top: var(--nyd-space-8);
+  margin-bottom: var(--nyd-space-3);
+  line-height: 1.2;
+}
+.nyd-prose h1:first-child,
+.nyd-prose h2:first-child { margin-top: 0; }
+
+.nyd-prose p {
+  line-height: var(--nyd-leading-relaxed);
+}
+
+.nyd-prose ul, .nyd-prose ol {
+  padding-left: var(--nyd-space-6);
+}
+.nyd-prose ul { list-style: disc; }
+.nyd-prose ol { list-style: decimal; }
+.nyd-prose li { margin-top: var(--nyd-space-2); }
+
+.nyd-prose blockquote {
+  border-left: 3px solid var(--nyd-color-primary);
+  padding-left: var(--nyd-space-5);
+  font-style: italic;
+  color: var(--nyd-color-text-muted);
+  margin: var(--nyd-space-6) 0;
+}
+
+.nyd-prose table {
+  font-size: var(--nyd-text-sm);
+}
+.nyd-prose table th {
+  text-align: left;
+  font-weight: var(--nyd-font-semibold);
+  padding: var(--nyd-space-2) var(--nyd-space-4);
+  background: var(--nyd-color-surface-2);
+  border-bottom: 2px solid var(--nyd-color-border);
+}
+.nyd-prose table td {
+  padding: var(--nyd-space-2) var(--nyd-space-4);
+  border-bottom: 1px solid var(--nyd-color-border);
+  vertical-align: top;
+}
+.nyd-prose table tr:last-child td { border-bottom: none; }
+
+.nyd-prose a {
+  color: var(--nyd-color-link);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.nyd-prose a:hover {
+  color: var(--nyd-color-primary-hover);
+}
+
+/* ─── Blockquote (standalone) ───────────────────────────────────────────── */
+blockquote {
+  border-left: 3px solid var(--nyd-color-border-strong);
+  padding: var(--nyd-space-3) var(--nyd-space-5);
+  color: var(--nyd-color-text-muted);
+  font-style: italic;
+  background: var(--nyd-color-surface-2);
+  border-radius: 0 var(--nyd-radius-md) var(--nyd-radius-md) 0;
+}
+
+/* ─── Figure / Caption ───────────────────────────────────────────────────── */
+figure { margin: 0; }
+figcaption {
+  font-size: var(--nyd-text-sm);
+  color: var(--nyd-color-text-muted);
+  margin-top: var(--nyd-space-2);
+  text-align: center;
+}
+
+/* ─── Mark / Highlighted Text ────────────────────────────────────────────── */
+mark {
+  background: var(--nyd-amber-100);
+  color: var(--nyd-gray-900);
+  padding: 0.05em 0.25em;
+  border-radius: var(--nyd-radius-xs);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) mark {
+    background: rgba(251,191,36,.25);
+    color: var(--nyd-color-text);
+  }
+}
+
+/* ─── Keyboard ───────────────────────────────────────────────────────────── */
+kbd {
+  display: inline-block;
+  padding: 0.1em 0.45em;
+  font-family: var(--nyd-font-mono);
+  font-size: 0.8em;
+  background: var(--nyd-color-surface-2);
+  border: 1px solid var(--nyd-color-border-strong);
+  border-bottom-width: 2px;
+  border-radius: var(--nyd-radius-sm);
+  line-height: 1.4;
+  white-space: nowrap;
+}

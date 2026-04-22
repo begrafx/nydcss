@@ -1,0 +1,216 @@
+/*
+ * nydcss — Reset & Normalize
+ * Inspired by: normalize.css, sanitize.css, water.css, modern-normalize
+ * Opinionated sensible defaults. Zero specificity wars.
+ */
+
+/* ─── Box Model ─────────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ─── Root & Document ───────────────────────────────────────────────────── */
+html {
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  tab-size: 4;
+  scroll-behavior: smooth;
+  font-size: 16px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--nyd-font-sans);
+  font-size: var(--nyd-text-base);
+  line-height: var(--nyd-leading-normal);
+  color: var(--nyd-color-text);
+  background-color: var(--nyd-color-bg);
+  min-height: 100vh;
+}
+
+/* ─── Media ─────────────────────────────────────────────────────────────── */
+img, svg, video, canvas, audio, iframe, embed, object {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+}
+
+/* ─── Typography ────────────────────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: 1.2;
+  overflow-wrap: break-word;
+}
+
+p {
+  overflow-wrap: break-word;
+}
+
+a {
+  color: var(--nyd-color-link);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 3px;
+  transition: text-decoration-color var(--nyd-duration-fast) ease,
+              color var(--nyd-duration-fast) ease;
+}
+a:hover {
+  text-decoration-color: currentColor;
+}
+
+abbr[title] {
+  text-decoration: underline dotted;
+  cursor: help;
+}
+
+b, strong { font-weight: var(--nyd-font-bold); }
+small { font-size: 0.875em; }
+sub, sup {
+  font-size: 0.75em;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+sub { bottom: -0.25em; }
+sup { top: -0.5em; }
+
+/* ─── Code ───────────────────────────────────────────────────────────────── */
+code, kbd, samp, pre {
+  font-family: var(--nyd-font-mono);
+  font-size: 0.875em;
+}
+
+pre {
+  overflow: auto;
+  background: var(--nyd-color-surface-2);
+  border: 1px solid var(--nyd-color-border);
+  border-radius: var(--nyd-radius-md);
+  padding: var(--nyd-space-4) var(--nyd-space-5);
+  line-height: 1.6;
+}
+
+code {
+  background: var(--nyd-color-surface-2);
+  border: 1px solid var(--nyd-color-border);
+  border-radius: var(--nyd-radius-sm);
+  padding: 0.1em 0.4em;
+}
+
+pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  border-radius: 0;
+  font-size: inherit;
+}
+
+/* ─── Forms ─────────────────────────────────────────────────────────────── */
+button, input, optgroup, select, textarea {
+  font-family: inherit;
+  font-size: 100%;
+  line-height: 1.15;
+  margin: 0;
+}
+
+button, [type="button"], [type="reset"], [type="submit"] {
+  -webkit-appearance: button;
+  appearance: button;
+  cursor: pointer;
+}
+
+button:disabled, input:disabled, select:disabled, textarea:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+textarea { resize: vertical; }
+
+fieldset {
+  border: 1px solid var(--nyd-color-border);
+  border-radius: var(--nyd-radius-md);
+  padding: var(--nyd-space-4);
+}
+
+legend {
+  padding: 0 var(--nyd-space-2);
+  font-weight: var(--nyd-font-medium);
+}
+
+/* ─── Tables ─────────────────────────────────────────────────────────────── */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+}
+
+/* ─── Lists ─────────────────────────────────────────────────────────────── */
+ol, ul { list-style: none; }
+
+/* ─── HR ─────────────────────────────────────────────────────────────────── */
+hr {
+  border: none;
+  border-top: 1px solid var(--nyd-color-border);
+  color: inherit;
+  height: 0;
+  margin: var(--nyd-space-6) 0;
+}
+
+/* ─── Details / Summary ─────────────────────────────────────────────────── */
+details summary { cursor: pointer; }
+details[open] summary { margin-bottom: var(--nyd-space-2); }
+
+/* ─── Dialog ─────────────────────────────────────────────────────────────── */
+dialog {
+  border: 1px solid var(--nyd-color-border);
+  border-radius: var(--nyd-radius-lg);
+  box-shadow: var(--nyd-shadow-lg);
+  padding: var(--nyd-space-6);
+  max-width: min(90vw, 480px);
+  background: var(--nyd-color-surface);
+  color: var(--nyd-color-text);
+}
+dialog::backdrop {
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(2px);
+}
+
+/* ─── Focus Visible ──────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--nyd-color-primary);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+:focus:not(:focus-visible) { outline: none; }
+
+/* ─── Selection ──────────────────────────────────────────────────────────── */
+::selection {
+  background: var(--nyd-color-primary-alpha);
+  color: var(--nyd-color-text);
+}
+
+/* ─── Scrollbar (minimal, opt-in via .nyd-scrollbar) ────────────────────── */
+.nyd-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+.nyd-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.nyd-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--nyd-color-border-strong);
+  border-radius: 999px;
+}
+
+/* ─── Screen-reader only ─────────────────────────────────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
